@@ -26,7 +26,7 @@ public class SwaggerDocumentationConfig {
     @Bean
     public Docket customImplementation(){
         Docket docket = new Docket(DocumentationType.OAS_30)
-                .protocols(new HashSet<>(Arrays.asList("http", "https")))
+                .protocols(new HashSet<>(Arrays.asList("https")))
                 .select()
                     .apis(RequestHandlerSelectors.basePackage("io.swagger.api"))
                     .build()
