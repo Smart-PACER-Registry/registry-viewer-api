@@ -1,5 +1,9 @@
 package io.swagger.configuration;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,16 +20,26 @@ import io.swagger.v3.oas.models.info.License;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-03-29T13:22:28.494Z[GMT]")
 @Configuration
 public class SwaggerDocumentationConfig {
+    @Value("${swagger.host}")
+    private String swaggerHost;
 
     @Bean
     public Docket customImplementation(){
-        return new Docket(DocumentationType.OAS_30)
+        Docket docket = new Docket(DocumentationType.OAS_30)
+                .protocols(new HashSet<>(Arrays.asList("http", "https")))
                 .select()
                     .apis(RequestHandlerSelectors.basePackage("io.swagger.api"))
                     .build()
                 .directModelSubstitute(org.threeten.bp.LocalDate.class, java.sql.Date.class)
                 .directModelSubstitute(org.threeten.bp.OffsetDateTime.class, java.util.Date.class)
                 .apiInfo(apiInfo());
+
+        if (swaggerHost != null && !swaggerHost.isEmpty()) {
+            System.out.println("Custom API Host: " + swaggerHost);
+            docket.host(swaggerHost);
+        }
+
+        return docket;
     }
 
     ApiInfo apiInfo() {
