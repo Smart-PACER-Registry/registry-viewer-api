@@ -1,5 +1,6 @@
 package io.swagger.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -8,9 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class HomeController {
+    @Value("${swagger.host}") String hostUri;
+
     @RequestMapping(value = "/")
     public String index() {
         System.out.println("/swagger-ui/index.html");
-        return "redirect:/swagger-ui/";
+        return "redirect:" + hostUri + "/registry-viewer-api/swagger-ui/";
     }
 }
