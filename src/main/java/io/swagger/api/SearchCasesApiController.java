@@ -91,9 +91,9 @@ public class SearchCasesApiController implements SearchCasesApi {
                 String value_ = value.trim().toLowerCase();
 
                 if (!whereString.isEmpty()) {
-                    whereString += " OR ";
+                    whereString += " AND ";
                 }
-                whereString += "LOWER(fp.family_name) LIKE '%" + value_ + "%' OR "
+                whereString += "(LOWER(fp.family_name) LIKE '%" + value_ + "%' OR "
                     + "LOWER(fp.given1_name) LIKE '%" + value_ + "%' OR "
                     + "LOWER(fp.given2_name) LIKE '%" + value_ + "%' OR "
                     + "LOWER(c.concept_name) LIKE '%" + value_ + "%' OR "
@@ -102,48 +102,74 @@ public class SearchCasesApiController implements SearchCasesApi {
                     + "LOWER(l.city) LIKE '%" + value_ + "%' OR "
                     + "LOWER(l.state) LIKE '%" + value_ + "%' OR "
                     + "LOWER(l.zip) LIKE '%" + value_ + "%' OR "
-                    + "LOWER(ci.status) LIKE '%" + value_ + "%'";
+                    + "LOWER(ci.status) LIKE '%" + value_ + "%')";
             }
         } else {
             fields = fields.toLowerCase();
             for (String value : values) {
-                if (!whereString.isEmpty()) {
-                    whereString += " OR ";
-                }
-
                 String value_ = value.trim().toLowerCase();
 
+                String subWhere = "";
                 if (fields.contains("lastname")) {
-                    whereString += "LOWER(fp.family_name) LIKE '%" + value_ + "%'";
+                    subWhere = "LOWER(fp.family_name) LIKE '%" + value_ + "%'";
                 }
 
                 if (fields.contains("firstname")) {
-                    whereString += "LOWER(fp.given1_name) LIKE '%" + value_ + "%' OR LOWER(fp.given2_name) LIKE '%'" + value_ + "'%";
+                    if (subWhere != null && !subWhere.isEmpty()) {
+                        subWhere += " AND ";
+                    }
+                    subWhere += "(LOWER(fp.given1_name) LIKE '%" + value_ + "%' OR LOWER(fp.given2_name) LIKE '%" + value_ + "%')";
                 }
 
                 if (fields.contains("gender")) {
-                    whereString += "LOWER(c.concept_name) LIKE '%" + value_ + "%'";
+                    if (subWhere != null && !subWhere.isEmpty()) {
+                        subWhere += " AND ";
+                    }
+                    subWhere += "LOWER(c.concept_name) LIKE '%" + value_ + "%'";
                 }
 
                 if (fields.contains("street")) {
-                    whereString += "LOWER(l.address_1) LIKE '%" + value_ + "%' OR l.address_2 IN '%" + value_ + "%'";
+                    if (subWhere != null && !subWhere.isEmpty()) {
+                        subWhere += " AND ";
+                    }
+                    subWhere += "(LOWER(l.address_1) LIKE '%" + value_ + "%' OR LOWER(l.address_2) LIKE '%" + value_ + "%')";
                 }
 
                 if (fields.contains("city")) {
-                    whereString += "LOWER(l.city) LIKE '%" + value_ + "%'";
+                    if (subWhere != null && !subWhere.isEmpty()) {
+                        subWhere += " AND ";
+                    }
+                    subWhere += "LOWER(l.city) LIKE '%" + value_ + "%'";
                 }
 
                 if (fields.contains("state")) {
-                    whereString += "LOWER(l.state) LIKE '%" + value_ + "%'";
+                    if (subWhere != null && !subWhere.isEmpty()) {
+                        subWhere += " AND ";
+                    }
+                    subWhere += "LOWER(l.state) LIKE '%" + value_ + "%'";
                 }
 
                 if (fields.contains("zip")) {
-                    whereString += "LOWER(l.zip) LIKE '%" + value_ + "%'";
+                    if (subWhere != null && !subWhere.isEmpty()) {
+                        subWhere += " AND ";
+                    }
+                    subWhere += "LOWER(l.zip) LIKE '%" + value_ + "%'";
                 }
 
                 if (fields.contains("status")) {
-                    whereString += "LOWER(ci.status) LIKE '%" + value_ + "%'";
+                    if (subWhere != null && !subWhere.isEmpty()) {
+                        subWhere += " AND ";
+                    }
+                    subWhere += "LOWER(ci.status) LIKE '%" + value_ + "%'";
                 }
+
+                if (!subWhere.isEmpty()) {
+                    if (!whereString.isEmpty()) {
+                        whereString += " AND ";
+                    }
+                    whereString += subWhere;
+                }
+
             }
 
         }
