@@ -20,8 +20,8 @@ import io.swagger.v3.oas.models.info.License;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-03-29T13:22:28.494Z[GMT]")
 @Configuration
 public class SwaggerDocumentationConfig {
-    @Value("${swagger.host}")
-    private String swaggerHost;
+    // @Value("${swagger.host}")
+    // private String swaggerHost;
 
     @Bean
     public Docket customImplementation(){
@@ -34,10 +34,10 @@ public class SwaggerDocumentationConfig {
                 .directModelSubstitute(org.threeten.bp.OffsetDateTime.class, java.util.Date.class)
                 .apiInfo(apiInfo());
 
-        if (swaggerHost != null && !swaggerHost.isEmpty()) {
-            System.out.println("Custom API Host: " + swaggerHost);
-            docket.host(swaggerHost);
-        }
+        // if (swaggerHost != null && !swaggerHost.isEmpty()) {
+        //     System.out.println("Custom API Host: " + swaggerHost);
+        //     docket = docket.host(swaggerHost);
+        // }
 
         return docket;
     }
