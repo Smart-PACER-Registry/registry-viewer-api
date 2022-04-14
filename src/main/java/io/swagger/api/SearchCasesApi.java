@@ -32,7 +32,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-03-29T13:22:28.494Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-14T14:20:46.754Z[GMT]")
 @Validated
 public interface SearchCasesApi {
 
@@ -45,7 +45,7 @@ public interface SearchCasesApi {
     @RequestMapping(value = "/search-cases",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Cases> searchCases(@NotNull @Parameter(in = ParameterIn.QUERY, description = "search terms for cases" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "terms", required = true) String terms, @Parameter(in = ParameterIn.QUERY, description = "search columns for cases" ,schema=@Schema()) @Valid @RequestParam(value = "fields", required = false) String fields);
+    ResponseEntity<Cases> searchCases(@Parameter(in = ParameterIn.QUERY, description = "search terms for cases" ,schema=@Schema()) @Valid @RequestParam(value = "terms", required = false) String terms, @Parameter(in = ParameterIn.QUERY, description = "search columns for cases" ,schema=@Schema()) @Valid @RequestParam(value = "fields", required = false) String fields);
 
 }
 
