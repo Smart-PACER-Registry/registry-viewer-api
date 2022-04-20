@@ -19,7 +19,7 @@ public class DataSources {
 
     @Bean(name = "registryJdbcTemplate")
     public JdbcTemplate registryJdbcTemplate(
-    @Qualifier("registryDataSource") DataSource dataSource) {
+        @Qualifier("registryDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
@@ -31,7 +31,7 @@ public class DataSources {
 
     @Bean(name = "viewerJdbcTemplate")
     public JdbcTemplate viewerJdbcTemplate(
-    @Qualifier("viewerDataSource") DataSource dataSource){
+        @Qualifier("viewerDataSource") DataSource dataSource){
         return new JdbcTemplate(dataSource);
     }
 }

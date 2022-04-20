@@ -5,7 +5,7 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.Categories;
+import io.swagger.model.CaseData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -32,20 +32,20 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-03-29T13:22:28.494Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-20T15:11:11.249Z[GMT]")
 @Validated
 public interface CategoryApi {
 
     @Operation(summary = "searches context within a category", description = "By passing in the appropriate options, you can search for available cases in the registry ", security = {
         @SecurityRequirement(name = "basicAuth")    }, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "search results matching criteria", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Categories.class))),
+        @ApiResponse(responseCode = "200", description = "search results matching criteria", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CaseData.class))),
         
         @ApiResponse(responseCode = "400", description = "bad input parameter") })
     @RequestMapping(value = "/category",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Categories> searchCategory(@NotNull @Parameter(in = ParameterIn.QUERY, description = "case-id for the category" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "case-id", required = true) String caseId, @NotNull @Parameter(in = ParameterIn.QUERY, description = "categories for the case-id" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "categories", required = true) String categories);
+    ResponseEntity<CaseData> searchCategory(@NotNull @Parameter(in = ParameterIn.QUERY, description = "case-id for the category" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "case-id", required = true) String caseId, @Parameter(in = ParameterIn.QUERY, description = "sections to query for the case-id" ,schema=@Schema()) @Valid @RequestParam(value = "sections", required = false) String sections);
 
 }
 

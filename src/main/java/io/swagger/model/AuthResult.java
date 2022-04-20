@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * AuthResult
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-12T00:57:17.762Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-20T15:11:11.249Z[GMT]")
 
 
 public class AuthResult   {

@@ -3,7 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.Contents;
+import io.swagger.model.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +12,43 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Categories
+ * CaseData
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-12T00:57:17.762Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-20T15:11:11.249Z[GMT]")
 
 
-public class Categories   {
+public class CaseData   {
+  @JsonProperty("case-id")
+  private Integer caseId = null;
+
   @JsonProperty("count")
   private Integer count = null;
 
   @JsonProperty("contents")
   @Valid
-  private List<Contents> contents = null;
+  private List<Content> contents = null;
 
-  public Categories count(Integer count) {
+  public CaseData caseId(Integer caseId) {
+    this.caseId = caseId;
+    return this;
+  }
+
+  /**
+   * Get caseId
+   * @return caseId
+   **/
+  @Schema(example = "1", description = "")
+  
+    public Integer getCaseId() {
+    return caseId;
+  }
+
+  public void setCaseId(Integer caseId) {
+    this.caseId = caseId;
+  }
+
+  public CaseData count(Integer count) {
     this.count = count;
     return this;
   }
@@ -45,14 +67,14 @@ public class Categories   {
     this.count = count;
   }
 
-  public Categories contents(List<Contents> contents) {
+  public CaseData contents(List<Content> contents) {
     this.contents = contents;
     return this;
   }
 
-  public Categories addContentsItem(Contents contentsItem) {
+  public CaseData addContentsItem(Content contentsItem) {
     if (this.contents == null) {
-      this.contents = new ArrayList<Contents>();
+      this.contents = new ArrayList<Content>();
     }
     this.contents.add(contentsItem);
     return this;
@@ -64,11 +86,11 @@ public class Categories   {
    **/
   @Schema(description = "")
       @Valid
-    public List<Contents> getContents() {
+    public List<Content> getContents() {
     return contents;
   }
 
-  public void setContents(List<Contents> contents) {
+  public void setContents(List<Content> contents) {
     this.contents = contents;
   }
 
@@ -81,21 +103,23 @@ public class Categories   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Categories categories = (Categories) o;
-    return Objects.equals(this.count, categories.count) &&
-        Objects.equals(this.contents, categories.contents);
+    CaseData caseData = (CaseData) o;
+    return Objects.equals(this.caseId, caseData.caseId) &&
+        Objects.equals(this.count, caseData.count) &&
+        Objects.equals(this.contents, caseData.contents);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(count, contents);
+    return Objects.hash(caseId, count, contents);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Categories {\n");
+    sb.append("class CaseData {\n");
     
+    sb.append("    caseId: ").append(toIndentedString(caseId)).append("\n");
     sb.append("    count: ").append(toIndentedString(count)).append("\n");
     sb.append("    contents: ").append(toIndentedString(contents)).append("\n");
     sb.append("}");

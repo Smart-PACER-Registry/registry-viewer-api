@@ -11,18 +11,24 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Contents
+ * Content
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-12T00:57:17.762Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-20T15:11:11.249Z[GMT]")
 
 
-public class Contents   {
+public class Content   {
+  @JsonProperty("content-id")
+  private Integer contentId = null;
+
   @JsonProperty("section")
   private String section = null;
 
   @JsonProperty("category")
   private String category = null;
+
+  @JsonProperty("question")
+  private String question = null;
 
   @JsonProperty("date")
   private String date = null;
@@ -36,7 +42,26 @@ public class Contents   {
   @JsonProperty("details")
   private Details details = null;
 
-  public Contents section(String section) {
+  public Content contentId(Integer contentId) {
+    this.contentId = contentId;
+    return this;
+  }
+
+  /**
+   * Get contentId
+   * @return contentId
+   **/
+  @Schema(example = "1", description = "")
+  
+    public Integer getContentId() {
+    return contentId;
+  }
+
+  public void setContentId(Integer contentId) {
+    this.contentId = contentId;
+  }
+
+  public Content section(String section) {
     this.section = section;
     return this;
   }
@@ -55,7 +80,7 @@ public class Contents   {
     this.section = section;
   }
 
-  public Contents category(String category) {
+  public Content category(String category) {
     this.category = category;
     return this;
   }
@@ -74,7 +99,26 @@ public class Contents   {
     this.category = category;
   }
 
-  public Contents date(String date) {
+  public Content question(String question) {
+    this.question = question;
+    return this;
+  }
+
+  /**
+   * Get question
+   * @return question
+   **/
+  @Schema(example = "Lab Result", description = "")
+  
+    public String getQuestion() {
+    return question;
+  }
+
+  public void setQuestion(String question) {
+    this.question = question;
+  }
+
+  public Content date(String date) {
     this.date = date;
     return this;
   }
@@ -93,7 +137,7 @@ public class Contents   {
     this.date = date;
   }
 
-  public Contents derivedValue(Value derivedValue) {
+  public Content derivedValue(Value derivedValue) {
     this.derivedValue = derivedValue;
     return this;
   }
@@ -113,7 +157,7 @@ public class Contents   {
     this.derivedValue = derivedValue;
   }
 
-  public Contents sourceValue(Value sourceValue) {
+  public Content sourceValue(Value sourceValue) {
     this.sourceValue = sourceValue;
     return this;
   }
@@ -133,7 +177,7 @@ public class Contents   {
     this.sourceValue = sourceValue;
   }
 
-  public Contents details(Details details) {
+  public Content details(Details details) {
     this.details = details;
     return this;
   }
@@ -162,27 +206,31 @@ public class Contents   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Contents contents = (Contents) o;
-    return Objects.equals(this.section, contents.section) &&
-        Objects.equals(this.category, contents.category) &&
-        Objects.equals(this.date, contents.date) &&
-        Objects.equals(this.derivedValue, contents.derivedValue) &&
-        Objects.equals(this.sourceValue, contents.sourceValue) &&
-        Objects.equals(this.details, contents.details);
+    Content content = (Content) o;
+    return Objects.equals(this.contentId, content.contentId) &&
+        Objects.equals(this.section, content.section) &&
+        Objects.equals(this.category, content.category) &&
+        Objects.equals(this.question, content.question) &&
+        Objects.equals(this.date, content.date) &&
+        Objects.equals(this.derivedValue, content.derivedValue) &&
+        Objects.equals(this.sourceValue, content.sourceValue) &&
+        Objects.equals(this.details, content.details);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(section, category, date, derivedValue, sourceValue, details);
+    return Objects.hash(contentId, section, category, question, date, derivedValue, sourceValue, details);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Contents {\n");
+    sb.append("class Content {\n");
     
+    sb.append("    contentId: ").append(toIndentedString(contentId)).append("\n");
     sb.append("    section: ").append(toIndentedString(section)).append("\n");
     sb.append("    category: ").append(toIndentedString(category)).append("\n");
+    sb.append("    question: ").append(toIndentedString(question)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    derivedValue: ").append(toIndentedString(derivedValue)).append("\n");
     sb.append("    sourceValue: ").append(toIndentedString(sourceValue)).append("\n");
