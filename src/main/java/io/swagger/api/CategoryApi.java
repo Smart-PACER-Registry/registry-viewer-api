@@ -33,13 +33,15 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-21T06:47:24.819Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-21T12:27:57.450Z[GMT]")
 @Validated
 public interface CategoryApi {
 
     @Operation(summary = "Add a flag or annotation", description = "Add a flag or annotation", security = {
         @SecurityRequirement(name = "basicAuth")    }, tags={  })
     @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "flag or annotation updated"),
+        
         @ApiResponse(responseCode = "201", description = "flag or annotation created"),
         
         @ApiResponse(responseCode = "400", description = "invalid input, object invalid"),
@@ -47,7 +49,7 @@ public interface CategoryApi {
         @ApiResponse(responseCode = "401", description = "authentication information is missing or invalid") })
     @RequestMapping(value = "/category",
         consumes = { "application/json" }, 
-        method = RequestMethod.POST)
+        method = RequestMethod.PUT)
     ResponseEntity<Void> addFlagOrAnnotation(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "case-id", required = true) Integer caseId, @NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "content-id", required = true) Integer contentId, @Parameter(in = ParameterIn.DEFAULT, description = "Flag or annotation to add", schema=@Schema()) @Valid @RequestBody FlagAnnotation body);
 
 
