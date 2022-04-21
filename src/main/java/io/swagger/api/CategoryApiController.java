@@ -71,6 +71,7 @@ public class CategoryApiController implements CategoryApi {
                 + " annotation = '" + body.getAnnotation() + "'"
                 + " WHERE observation_id = " + contentId + " AND case_id = " + caseId;
             viewerJdbcTemplate.update(sql);
+            return new ResponseEntity<Void>(HttpStatus.OK);
         } else {
             sql = "INSERT INTO viewer_data"
                 + " (observation_id, flag, annotation, case_id)"
@@ -79,9 +80,8 @@ public class CategoryApiController implements CategoryApi {
                 + " '" + body.getAnnotation() + "',"
                 + " " + caseId + ")";
             viewerJdbcTemplate.update(sql);
+            return new ResponseEntity<Void>(HttpStatus.CREATED);
         }
-
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
     private Integer getConceptCodeForCategory(String category) {
