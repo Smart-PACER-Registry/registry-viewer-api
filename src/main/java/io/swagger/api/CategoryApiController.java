@@ -254,6 +254,7 @@ public class CategoryApiController implements CategoryApi {
             CaseData sectionsResponse = new CaseData();
             sectionsResponse.setContents(registryData);
             sectionsResponse.setCaseId(caseIdInteger);
+            sectionsResponse.setCount(registryData.size());
 
             return new ResponseEntity<CaseData>(sectionsResponse, HttpStatus.OK);
         }
