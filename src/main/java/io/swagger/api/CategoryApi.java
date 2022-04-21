@@ -6,6 +6,7 @@
 package io.swagger.api;
 
 import io.swagger.model.CaseData;
+import io.swagger.model.FlagAnnotation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -32,9 +33,23 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-20T15:11:11.249Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-21T05:40:37.126Z[GMT]")
 @Validated
 public interface CategoryApi {
+
+    @Operation(summary = "Add a flag or annotation", description = "Add a flag or annotation", security = {
+        @SecurityRequirement(name = "basicAuth")    }, tags={  })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "201", description = "flag or annotation created"),
+        
+        @ApiResponse(responseCode = "400", description = "invalid input, object invalid"),
+        
+        @ApiResponse(responseCode = "401", description = "authentication information is missing or invalid") })
+    @RequestMapping(value = "/category",
+        consumes = { "application/json" }, 
+        method = RequestMethod.POST)
+    ResponseEntity<Void> addFlagOrAnnotation(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "content-id", required = true) Integer contentId, @Parameter(in = ParameterIn.DEFAULT, description = "Flag or annotation to add", schema=@Schema()) @Valid @RequestBody FlagAnnotation body);
+
 
     @Operation(summary = "searches context within a category", description = "By passing in the appropriate options, you can search for available cases in the registry ", security = {
         @SecurityRequirement(name = "basicAuth")    }, tags={  })

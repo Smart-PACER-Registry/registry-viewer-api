@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * Content
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-20T15:11:11.249Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-21T05:40:37.126Z[GMT]")
 
 
 public class Content   {
@@ -38,6 +38,12 @@ public class Content   {
 
   @JsonProperty("source-value")
   private Value sourceValue = null;
+
+  @JsonProperty("flag")
+  private String flag = null;
+
+  @JsonProperty("annotation")
+  private String annotation = null;
 
   @JsonProperty("details")
   private Details details = null;
@@ -177,6 +183,44 @@ public class Content   {
     this.sourceValue = sourceValue;
   }
 
+  public Content flag(String flag) {
+    this.flag = flag;
+    return this;
+  }
+
+  /**
+   * Get flag
+   * @return flag
+   **/
+  @Schema(example = "flag1", description = "")
+  
+    public String getFlag() {
+    return flag;
+  }
+
+  public void setFlag(String flag) {
+    this.flag = flag;
+  }
+
+  public Content annotation(String annotation) {
+    this.annotation = annotation;
+    return this;
+  }
+
+  /**
+   * Get annotation
+   * @return annotation
+   **/
+  @Schema(example = "add some annotations here", description = "")
+  
+    public String getAnnotation() {
+    return annotation;
+  }
+
+  public void setAnnotation(String annotation) {
+    this.annotation = annotation;
+  }
+
   public Content details(Details details) {
     this.details = details;
     return this;
@@ -214,12 +258,14 @@ public class Content   {
         Objects.equals(this.date, content.date) &&
         Objects.equals(this.derivedValue, content.derivedValue) &&
         Objects.equals(this.sourceValue, content.sourceValue) &&
+        Objects.equals(this.flag, content.flag) &&
+        Objects.equals(this.annotation, content.annotation) &&
         Objects.equals(this.details, content.details);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(contentId, section, category, question, date, derivedValue, sourceValue, details);
+    return Objects.hash(contentId, section, category, question, date, derivedValue, sourceValue, flag, annotation, details);
   }
 
   @Override
@@ -234,6 +280,8 @@ public class Content   {
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    derivedValue: ").append(toIndentedString(derivedValue)).append("\n");
     sb.append("    sourceValue: ").append(toIndentedString(sourceValue)).append("\n");
+    sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
+    sb.append("    annotation: ").append(toIndentedString(annotation)).append("\n");
     sb.append("    details: ").append(toIndentedString(details)).append("\n");
     sb.append("}");
     return sb.toString();

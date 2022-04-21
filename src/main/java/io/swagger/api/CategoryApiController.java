@@ -10,6 +10,7 @@ import io.swagger.model.Category;
 import io.swagger.model.Content;
 import io.swagger.model.Details;
 import io.swagger.model.FactRelationship;
+import io.swagger.model.FlagAnnotation;
 import io.swagger.model.ViewerData;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.*;
@@ -55,6 +57,11 @@ public class CategoryApiController implements CategoryApi {
     public CategoryApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
+    }
+
+    public ResponseEntity<Void> addFlagOrAnnotation(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "content-id", required = true) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "Flag or annotation to add", schema=@Schema()) @Valid @RequestBody FlagAnnotation body) {
+        String accept = request.getHeader("Accept");
+        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     private Integer getConceptCodeForCategory(String category) {
@@ -203,12 +210,12 @@ public class CategoryApiController implements CategoryApi {
             // Make map for viwer data
             String sql = "SELECT observation_id, flag, annotation FROM viewer_data WHERE case_id = " + caseId;
             ViewerDataRowMapper viewerDataRowMapping = new ViewerDataRowMapper();
-            List<ViewerData> viewDatas = viewerJdbcTemplate.query(sql, viewerDataRowMapping);
+            viewerJdbcTemplate.query(sql, viewerDataRowMapping);
             Map<Integer, ViewerData> resultUserDataMap = viewerDataRowMapping.getResultMap();
 
             sql = "SELECT c.concept_id AS ConceptId, c.section AS Section, c.category AS Category FROM category c";
             CategoryConceptCodeRowMapper categoryConceptCodeRowMapper = new CategoryConceptCodeRowMapper();
-            List<Category> categories = viewerJdbcTemplate.query(sql, categoryConceptCodeRowMapper);
+            viewerJdbcTemplate.query(sql, categoryConceptCodeRowMapper);
 
             CaseDataRowMapper caseDataRowMapper = new CaseDataRowMapper(categoryConceptCodeRowMapper.getCategoryConceptMap());
             sql = createSearchSqlStatement(caseIdInteger, sections);
@@ -216,6 +223,11 @@ public class CategoryApiController implements CategoryApi {
             
             // Add details to each content
             for (Content content : registryData) {
+                ViewerData viewerData = resultUserDataMap.get(content.getContentId());
+                if (viewerData != null) {
+                    content.setFlag(viewerData.getFlag());
+                    content.setAnnotation(viewerData.getAnnotation());
+                }
                 addDetails(content);
             }
 
