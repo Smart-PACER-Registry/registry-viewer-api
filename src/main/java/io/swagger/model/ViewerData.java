@@ -1,23 +1,13 @@
 package io.swagger.model;
 
 public class ViewerData {
-    private Integer viewerDataId;
     private Integer observationId;
-    private Integer caseId;
-    private Integer personId;
     private String flag;
     private String annotation;
+    private Integer caseId;
 
     public ViewerData() {
 
-    }
-
-    public void setViewerDataId(Integer viewerDataId) {
-        this.viewerDataId = viewerDataId;
-    }
-
-    public Integer getViewerDataId() {
-        return this.viewerDataId;
     }
 
     public void setObservationId(Integer observationId) {
@@ -26,22 +16,6 @@ public class ViewerData {
 
     public Integer getObservationId() {
         return this.observationId;
-    }
-
-    public void setCaseId(Integer caseId) {
-        this.caseId = caseId;
-    }
-
-    public Integer getCaseId() {
-        return this.caseId;
-    }
-
-    public void setPersonId(Integer personId) {
-        this.personId = personId;
-    }
-
-    public Integer getPersonId() {
-        return this.personId;
     }
 
     public void setFlag(String flag) {
@@ -58,5 +32,13 @@ public class ViewerData {
 
     public String getAnnotation() {
         return this.annotation;
+    }
+
+    public void setCaseId(Integer caseId) {
+        this.caseId = caseId;
+    }
+
+    public Integer getCaseId() {
+        return this.caseId;
     }
 }

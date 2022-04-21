@@ -27,12 +27,10 @@ public class ViewerDataRowMapper implements RowMapper<ViewerData> {
 
         Integer obsKey = rs.getInt("observation_id");
 
-        viewerData.setViewerDataId(rs.getInt("view_data_id"));
         viewerData.setObservationId(obsKey);
-        viewerData.setCaseId(rs.getInt("case_id"));
-        viewerData.setPersonId(rs.getInt("person_id"));
         viewerData.setFlag(rs.getString("flag"));
         viewerData.setAnnotation(rs.getString("annotation"));
+        viewerData.setCaseId(rs.getInt("case_id"));
 
         resultMap.put(obsKey, viewerData);
         

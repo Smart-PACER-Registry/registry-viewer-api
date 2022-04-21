@@ -59,9 +59,29 @@ public class CategoryApiController implements CategoryApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addFlagOrAnnotation(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "content-id", required = true) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "Flag or annotation to add", schema=@Schema()) @Valid @RequestBody FlagAnnotation body) {
+    public ResponseEntity<Void> addFlagOrAnnotation(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "case-id", required = true) Integer caseId,@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "content-id", required = true) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "Flag or annotation to add", schema=@Schema()) @Valid @RequestBody FlagAnnotation body) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        
+        String sql = "SELECT * FROM viewer_data";
+        List<ViewerData> viewerDatas = viewerJdbcTemplate.query(sql, new ViewerDataRowMapper());
+        if (viewerDatas.size() > 0) {
+            // Update
+            sql = "UPDATE viewer_data SET"
+                + " flag = '" + body.getFlag() + "',"
+                + " annotation = '" + body.getAnnotation() + "'"
+                + " WHERE observation_id = " + contentId + " AND case_id = " + caseId;
+            viewerJdbcTemplate.update(sql);
+        } else {
+            sql = "INSERT INTO viewer_data"
+                + " (observation_id, flag, annotation, case_id)"
+                + " VALUES (" + contentId + ","
+                + " '" + body.getFlag() + "',"
+                + " '" + body.getAnnotation() + "',"
+                + " " + caseId + ")";
+            viewerJdbcTemplate.update(sql);
+        }
+
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
     private Integer getConceptCodeForCategory(String category) {
@@ -208,7 +228,7 @@ public class CategoryApiController implements CategoryApi {
 
         if (accept != null && accept.contains("application/json")) {
             // Make map for viwer data
-            String sql = "SELECT observation_id, flag, annotation FROM viewer_data WHERE case_id = " + caseId;
+            String sql = "SELECT observation_id, flag, annotation, case_id FROM viewer_data WHERE case_id = " + caseId;
             ViewerDataRowMapper viewerDataRowMapping = new ViewerDataRowMapper();
             viewerJdbcTemplate.query(sql, viewerDataRowMapping);
             Map<Integer, ViewerData> resultUserDataMap = viewerDataRowMapping.getResultMap();
