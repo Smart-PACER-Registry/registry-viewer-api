@@ -1,8 +1,13 @@
 package io.swagger.dbo;
 
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import com.fasterxml.jackson.databind.util.StdDateFormat;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -16,6 +21,11 @@ public class CaseRowMapper implements RowMapper<ModelCase> {
 
         modelCase.setCaseId(rs.getInt("CaseId"));
 
+        Date initialReportDate = rs.getDate("InitialRecordDate");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        String initialReportDateString = dateFormat.format(initialReportDate);
+        modelCase.setInitialReportDate(initialReportDateString);
+        
         modelCase.setLastName(rs.getString("LastName")==null?"":rs.getString("LastName"));
         String first1 = rs.getString("FirstName1");
         String first2 = rs.getString("FirstName2");

@@ -12,12 +12,15 @@ import javax.validation.constraints.*;
  * ModelCase
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-22T13:54:56.277Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-22T21:38:13.301Z[GMT]")
 
 
 public class ModelCase   {
   @JsonProperty("caseId")
   private Integer caseId = null;
+
+  @JsonProperty("initialReportDate")
+  private String initialReportDate = null;
 
   @JsonProperty("firstName")
   private String firstName = null;
@@ -66,6 +69,25 @@ public class ModelCase   {
 
   public void setCaseId(Integer caseId) {
     this.caseId = caseId;
+  }
+
+  public ModelCase initialReportDate(String initialReportDate) {
+    this.initialReportDate = initialReportDate;
+    return this;
+  }
+
+  /**
+   * Get initialReportDate
+   * @return initialReportDate
+   **/
+  @Schema(example = "2020-05-15T20:30:00.000Z", description = "")
+  
+    public String getInitialReportDate() {
+    return initialReportDate;
+  }
+
+  public void setInitialReportDate(String initialReportDate) {
+    this.initialReportDate = initialReportDate;
   }
 
   public ModelCase firstName(String firstName) {
@@ -269,6 +291,7 @@ public class ModelCase   {
     }
     ModelCase _case = (ModelCase) o;
     return Objects.equals(this.caseId, _case.caseId) &&
+        Objects.equals(this.initialReportDate, _case.initialReportDate) &&
         Objects.equals(this.firstName, _case.firstName) &&
         Objects.equals(this.lastName, _case.lastName) &&
         Objects.equals(this.gender, _case.gender) &&
@@ -283,7 +306,7 @@ public class ModelCase   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(caseId, firstName, lastName, gender, dob, phone, street, city, state, zip, status);
+    return Objects.hash(caseId, initialReportDate, firstName, lastName, gender, dob, phone, street, city, state, zip, status);
   }
 
   @Override
@@ -292,6 +315,7 @@ public class ModelCase   {
     sb.append("class ModelCase {\n");
     
     sb.append("    caseId: ").append(toIndentedString(caseId)).append("\n");
+    sb.append("    initialReportDate: ").append(toIndentedString(initialReportDate)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("    gender: ").append(toIndentedString(gender)).append("\n");

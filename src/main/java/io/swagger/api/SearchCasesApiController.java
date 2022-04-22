@@ -46,7 +46,8 @@ public class SearchCasesApiController implements SearchCasesApi {
         String retSql = "";
         
         String sqlSelectFrom = "SELECT"
-            + " ci.case_info_id AS CaseId, "
+            + " ci.case_info_id AS CaseId,"
+            + " ci.created AS InitialRecordDate,"
             + " fp.family_name AS LastName,"
             + " fp.given1_name AS FirstName1,"
             + " fp.given2_name AS FirstName2,"
@@ -115,11 +116,11 @@ public class SearchCasesApiController implements SearchCasesApi {
                     fields = fields.toLowerCase();
 
                     String subWhere = "";
-                    if (fields.contains("lastname")) {
+                    if (fields.contains("lastName")) {
                         subWhere = "LOWER(fp.family_name) " + modifierString1 + value_ + modifierString2;
                     }
 
-                    if (fields.contains("firstname")) {
+                    if (fields.contains("firstName")) {
                         if (subWhere != null && !subWhere.isEmpty()) {
                             subWhere += " AND ";
                         }
@@ -165,6 +166,15 @@ public class SearchCasesApiController implements SearchCasesApi {
                         if (subWhere != null && !subWhere.isEmpty()) {
                             subWhere += " AND ";
                         }
+                        subWhere += "LOWER(ci.status) " + modifierString1 + value_ + modifierString2;
+                    }
+
+                    if (fields.contains("dob")) {
+                        if (subWhere != null && !subWhere.isEmpty()) {
+                            subWhere += " AND ";
+                        }
+
+
                         subWhere += "LOWER(ci.status) " + modifierString1 + value_ + modifierString2;
                     }
 

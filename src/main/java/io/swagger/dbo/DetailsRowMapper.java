@@ -37,7 +37,7 @@ public class DetailsRowMapper implements RowMapper<Detail> {
         Detail detail = new Detail();
         Date startDate = rs.getDate("Date");
         if (startDate != null) {
-            DateFormat dateFormat = new SimpleDateFormat(StdDateFormat.DATE_FORMAT_STR_ISO8601);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
             String value = dateFormat.format(startDate);
 
             detail.setDate(value);

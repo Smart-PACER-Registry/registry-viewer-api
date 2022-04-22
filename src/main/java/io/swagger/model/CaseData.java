@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
  * CaseData
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-22T13:54:56.277Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-22T21:38:13.301Z[GMT]")
 
 
 public class CaseData   {
