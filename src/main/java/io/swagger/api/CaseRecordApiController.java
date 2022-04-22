@@ -36,9 +36,9 @@ import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-14T14:20:46.754Z[GMT]")
 @RestController
-public class CategoryApiController implements CategoryApi {
+public class CaseRecordApiController implements CaseRecordApi {
 
-    private static final Logger log = LoggerFactory.getLogger(CategoryApiController.class);
+    private static final Logger log = LoggerFactory.getLogger(CaseRecordApiController.class);
     private static final long observation_concept_code_min = 2000000000L;
 
     private final ObjectMapper objectMapper;
@@ -54,7 +54,7 @@ public class CategoryApiController implements CategoryApi {
     private JdbcTemplate viewerJdbcTemplate;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public CategoryApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public CaseRecordApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
     }

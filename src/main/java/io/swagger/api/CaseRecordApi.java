@@ -33,9 +33,9 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-22T13:54:56.277Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-22T20:19:38.503Z[GMT]")
 @Validated
-public interface CategoryApi {
+public interface CaseRecordApi {
 
     @Operation(summary = "Add a flag or annotation", description = "Add a flag or annotation", security = {
         @SecurityRequirement(name = "basicAuth")    }, tags={  })
@@ -47,7 +47,7 @@ public interface CategoryApi {
         @ApiResponse(responseCode = "400", description = "invalid input, object invalid"),
         
         @ApiResponse(responseCode = "401", description = "authentication information is missing or invalid") })
-    @RequestMapping(value = "/category",
+    @RequestMapping(value = "/case-record",
         consumes = { "application/json" }, 
         method = RequestMethod.PUT)
     ResponseEntity<Void> addFlagOrAnnotation(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "case-id", required = true) Integer caseId, @NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "content-id", required = true) Integer contentId, @Parameter(in = ParameterIn.DEFAULT, description = "Flag or annotation to add", schema=@Schema()) @Valid @RequestBody FlagAnnotation body);
@@ -59,7 +59,7 @@ public interface CategoryApi {
         @ApiResponse(responseCode = "200", description = "search results matching criteria", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CaseData.class))),
         
         @ApiResponse(responseCode = "400", description = "bad input parameter") })
-    @RequestMapping(value = "/category",
+    @RequestMapping(value = "/case-record",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<CaseData> searchCategory(@NotNull @Parameter(in = ParameterIn.QUERY, description = "case-id for the category" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "case-id", required = true) String caseId, @Parameter(in = ParameterIn.QUERY, description = "sections to query for the case-id" ,schema=@Schema()) @Valid @RequestParam(value = "sections", required = false) String sections);
