@@ -12,14 +12,14 @@ import javax.validation.constraints.*;
  * AuthResult
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-21T06:47:24.819Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-22T13:54:56.277Z[GMT]")
 
 
 public class AuthResult   {
-  @JsonProperty("session-id")
+  @JsonProperty("sessionId")
   private String sessionId = null;
 
-  @JsonProperty("expires-if-no-activity")
+  @JsonProperty("expiresIfNoActivity")
   private Integer expiresIfNoActivity = null;
 
   public AuthResult sessionId(String sessionId) {

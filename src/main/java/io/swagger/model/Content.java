@@ -14,11 +14,11 @@ import javax.validation.constraints.*;
  * Content
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-21T06:47:24.819Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-22T13:54:56.277Z[GMT]")
 
 
 public class Content   {
-  @JsonProperty("content-id")
+  @JsonProperty("contentId")
   private Integer contentId = null;
 
   @JsonProperty("section")
@@ -33,10 +33,10 @@ public class Content   {
   @JsonProperty("date")
   private String date = null;
 
-  @JsonProperty("derived-value")
+  @JsonProperty("derivedValue")
   private Value derivedValue = null;
 
-  @JsonProperty("source-value")
+  @JsonProperty("sourceValue")
   private Value sourceValue = null;
 
   @JsonProperty("flag")

@@ -16,7 +16,7 @@ public class CaseRowMapper implements RowMapper<ModelCase> {
 
         modelCase.setCaseId(rs.getInt("CaseId"));
 
-        modelCase.setLastname(rs.getString("LastName")==null?"":rs.getString("LastName"));
+        modelCase.setLastName(rs.getString("LastName")==null?"":rs.getString("LastName"));
         String first1 = rs.getString("FirstName1");
         String first2 = rs.getString("FirstName2");
         String firstname = "";
@@ -29,7 +29,7 @@ public class CaseRowMapper implements RowMapper<ModelCase> {
             else
                 firstname = first1.trim() + " " + first2.trim();
         }
-        modelCase.setFirstname(firstname);
+        modelCase.setFirstName(firstname);
         modelCase.setGender(rs.getString("Gender")==null?"":rs.getString("Gender"));
         
         int dobYear = rs.getInt("DobYear");

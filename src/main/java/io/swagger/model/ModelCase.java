@@ -12,18 +12,18 @@ import javax.validation.constraints.*;
  * ModelCase
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-21T06:47:24.819Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-22T13:54:56.277Z[GMT]")
 
 
 public class ModelCase   {
-  @JsonProperty("case-id")
+  @JsonProperty("caseId")
   private Integer caseId = null;
 
-  @JsonProperty("firstname")
-  private String firstname = null;
+  @JsonProperty("firstName")
+  private String firstName = null;
 
-  @JsonProperty("lastname")
-  private String lastname = null;
+  @JsonProperty("lastName")
+  private String lastName = null;
 
   @JsonProperty("gender")
   private String gender = null;
@@ -68,42 +68,42 @@ public class ModelCase   {
     this.caseId = caseId;
   }
 
-  public ModelCase firstname(String firstname) {
-    this.firstname = firstname;
+  public ModelCase firstName(String firstName) {
+    this.firstName = firstName;
     return this;
   }
 
   /**
-   * Get firstname
-   * @return firstname
+   * Get firstName
+   * @return firstName
    **/
   @Schema(example = "Patch", description = "")
   
-    public String getFirstname() {
-    return firstname;
+    public String getFirstName() {
+    return firstName;
   }
 
-  public void setFirstname(String firstname) {
-    this.firstname = firstname;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
   }
 
-  public ModelCase lastname(String lastname) {
-    this.lastname = lastname;
+  public ModelCase lastName(String lastName) {
+    this.lastName = lastName;
     return this;
   }
 
   /**
-   * Get lastname
-   * @return lastname
+   * Get lastName
+   * @return lastName
    **/
   @Schema(example = "Adams", description = "")
   
-    public String getLastname() {
-    return lastname;
+    public String getLastName() {
+    return lastName;
   }
 
-  public void setLastname(String lastname) {
-    this.lastname = lastname;
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
   public ModelCase gender(String gender) {
@@ -269,8 +269,8 @@ public class ModelCase   {
     }
     ModelCase _case = (ModelCase) o;
     return Objects.equals(this.caseId, _case.caseId) &&
-        Objects.equals(this.firstname, _case.firstname) &&
-        Objects.equals(this.lastname, _case.lastname) &&
+        Objects.equals(this.firstName, _case.firstName) &&
+        Objects.equals(this.lastName, _case.lastName) &&
         Objects.equals(this.gender, _case.gender) &&
         Objects.equals(this.dob, _case.dob) &&
         Objects.equals(this.phone, _case.phone) &&
@@ -283,7 +283,7 @@ public class ModelCase   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(caseId, firstname, lastname, gender, dob, phone, street, city, state, zip, status);
+    return Objects.hash(caseId, firstName, lastName, gender, dob, phone, street, city, state, zip, status);
   }
 
   @Override
@@ -292,8 +292,8 @@ public class ModelCase   {
     sb.append("class ModelCase {\n");
     
     sb.append("    caseId: ").append(toIndentedString(caseId)).append("\n");
-    sb.append("    firstname: ").append(toIndentedString(firstname)).append("\n");
-    sb.append("    lastname: ").append(toIndentedString(lastname)).append("\n");
+    sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
+    sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("    gender: ").append(toIndentedString(gender)).append("\n");
     sb.append("    dob: ").append(toIndentedString(dob)).append("\n");
     sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
