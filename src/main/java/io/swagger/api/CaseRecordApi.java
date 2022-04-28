@@ -33,20 +33,17 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-22T20:19:38.503Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-28T14:24:10.684Z[GMT]")
 @Validated
 public interface CaseRecordApi {
 
-    @Operation(summary = "Add a flag or annotation", description = "Add a flag or annotation", security = {
-        @SecurityRequirement(name = "basicAuth")    }, tags={  })
+    @Operation(summary = "Add a flag or annotation", description = "Add a flag or annotation", tags={  })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "flag or annotation updated"),
         
         @ApiResponse(responseCode = "201", description = "flag or annotation created"),
         
-        @ApiResponse(responseCode = "400", description = "invalid input, object invalid"),
-        
-        @ApiResponse(responseCode = "401", description = "authentication information is missing or invalid") })
+        @ApiResponse(responseCode = "400", description = "invalid input, object invalid") })
     @RequestMapping(value = "/case-record",
         consumes = { "application/json" }, 
         method = RequestMethod.PUT)
