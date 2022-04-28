@@ -176,7 +176,7 @@ public class CaseRecordApiController implements CaseRecordApi {
                     + " cd.condition_end_date AS endDate,"
                     + " c.vocabulary_id AS System,"
                     + " c.concept_code AS Code,"
-                    + " c.concept_name AS Display,"
+                    + " c.concept_name AS Display"
                     + " FROM condition_occurrence cd join concept c on cd.condition_concept_id = c.concept_id"
                     + " WHERE cd.condition_occurrence_id = " + entityId;
             } else if (domainId == 27L) { // observation
@@ -206,10 +206,9 @@ public class CaseRecordApiController implements CaseRecordApi {
                     + " cv.vocabulary_id AS ValueAsConceptSystem,"
                     + " cv.concept_code AS ValueAsConceptCode,"
                     + " cv.concept_name AS ValueAsConceptDisplay,"
-                    + " cu.concept_name AS Unit"
-                    + " m.range_low AS RangeLow"
+                    + " cu.concept_name AS Unit,"
+                    + " m.range_low AS RangeLow,"
                     + " m.range_high AS RangeHigh"
-                    + " m."
                     + " FROM measurement m join concept c on m.measurement_concept_id = c.concept_id"
                     + " left join concept cv on m.value_as_concept_id = cv.concept_id"
                     + " left join concept cu on m.unit_concept_id = cu.concept_id"

@@ -111,7 +111,7 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             Double valueAsNumber = rs.getDouble("ValueAsNumber");
             String valueAsString = rs.getString("ValueAsString");
             if (valueAsConceptCode != null && !valueAsConceptCode.isEmpty()) {
-                detailObservation.setTableDisplayText (rs.getString("ValueAsConceptDisplay"));
+                detailObservation.setValue (rs.getString("ValueAsConceptDisplay"));
                 detailObservation.setTableDisplayText (
                     rs.getString("Display") + " | " +
                     rs.getString("ValueAsConceptDisplay"));
@@ -126,6 +126,7 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
                 detailObservation.setValue(valueAsString);
                 detailObservation.setTableDisplayText(rs.getString(("Display") + " | " + valueAsString));
             }
+
             detailObservation.setUnit(rs.getString("Unit"));
 
             retVal = detailObservation;
@@ -144,7 +145,6 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             
             String valueAsConceptCode = rs.getString("ValueAsConceptCode");
             Double valueAsNumber = rs.getDouble("ValueAsNumber");
-            String valueAsString = rs.getString("ValueAsString");
             if (valueAsConceptCode != null && !valueAsConceptCode.isEmpty()) {
                 detailMeasurement.setValue(rs.getString("ValueAsConceptDisplay"));
                 detailMeasurement.setTableDisplayText(
@@ -155,6 +155,8 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             } 
             detailMeasurement.setUnit(rs.getString("Unit"));
 
+            detailMeasurement.setRangeLow(rs.getInt("RangeLow"));
+            detailMeasurement.setRangeHigh(rs.getInt("RangeHigh"));
             retVal = detailMeasurement;
         } else if ("note".equals(entity_type)) {
             DetailNote detailNote = new DetailNote();
