@@ -257,8 +257,12 @@ public class CaseRecordApiController implements CaseRecordApi {
             for (Content content : registryData) {
                 ViewerData viewerData = resultUserDataMap.get(content.getContentId());
                 if (viewerData != null) {
-                    content.setFlag(viewerData.getFlag());
-                    content.setAnnotation(viewerData.getAnnotation());
+                    String flag = viewerData.getFlag();
+                    String annotation = viewerData.getAnnotation();
+                    if (flag != null && !flag.isEmpty() && !"null".equalsIgnoreCase(flag))
+                        content.setFlag(viewerData.getFlag());
+                    if (annotation != null && !annotation.isEmpty() && !"null".equalsIgnoreCase(annotation))
+                        content.setAnnotation(viewerData.getAnnotation());
                 }
                 addDetails(content);
             }
