@@ -42,7 +42,7 @@ public class SearchCasesApiController implements SearchCasesApi {
         this.request = request;
     }
 
-    private String CreateSearchSqlStatement (String terms, String fields) {
+    private String CreateSearchSqlStatement (String terms, String fields) throws Exception {
         String retSql = "";
         
         String sqlSelectFrom = "SELECT"
@@ -173,9 +173,15 @@ public class SearchCasesApiController implements SearchCasesApi {
                         if (subWhere != null && !subWhere.isEmpty()) {
                             subWhere += " AND ";
                         }
-
-
                         subWhere += "LOWER(ci.status) " + modifierString1 + value_ + modifierString2;
+                    }
+
+                    if (fields.contains("caseid")) {
+                        if (subWhere != null && !subWhere.isEmpty()) {
+                            subWhere += " AND ";
+                        }
+
+                        subWhere += "ci.case_info_id = " + value_;
                     }
 
                     if (!subWhere.isEmpty()) {
@@ -188,6 +194,10 @@ public class SearchCasesApiController implements SearchCasesApi {
                 }
             }
 
+            if (whereString.isEmpty()) {
+                throw new Exception("fileds = " + fields + " not supported.");
+            }
+
             retSql = sqlSelectFrom + " WHERE " + whereString;
         }
 
@@ -197,7 +207,14 @@ public class SearchCasesApiController implements SearchCasesApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             // Search database for terms. Terms are comma separated string values.
-            String sql = CreateSearchSqlStatement (terms, fields);
+            String sql = "";
+            try {
+                sql = CreateSearchSqlStatement (terms, fields);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResponseEntity<Cases>(HttpStatus.BAD_REQUEST);
+            }
+            
             log.debug("searchCases:Query: " + sql);
             List<ModelCase> caseList = registryJdbcTemplate.query(sql, new CaseRowMapper());
             Cases cases = new Cases();
