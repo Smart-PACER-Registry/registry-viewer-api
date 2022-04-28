@@ -3,7 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.ModelCase;
+import io.swagger.model.Question;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,64 +12,42 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Cases
+ * Questions
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-28T01:04:53.602Z[GMT]")
 
 
-public class Cases   {
-  @JsonProperty("count")
-  private Integer count = null;
-
-  @JsonProperty("cases")
+public class Questions   {
+  @JsonProperty("questions")
   @Valid
-  private List<ModelCase> cases = null;
+  private List<Question> questions = null;
 
-  public Cases count(Integer count) {
-    this.count = count;
+  public Questions questions(List<Question> questions) {
+    this.questions = questions;
     return this;
   }
 
-  /**
-   * Get count
-   * @return count
-   **/
-  @Schema(example = "1", description = "")
-  
-    public Integer getCount() {
-    return count;
-  }
-
-  public void setCount(Integer count) {
-    this.count = count;
-  }
-
-  public Cases cases(List<ModelCase> cases) {
-    this.cases = cases;
-    return this;
-  }
-
-  public Cases addCasesItem(ModelCase casesItem) {
-    if (this.cases == null) {
-      this.cases = new ArrayList<ModelCase>();
+  public Questions addQuestionsItem(Question questionsItem) {
+    if (this.questions == null) {
+      this.questions = new ArrayList<Question>();
     }
-    this.cases.add(casesItem);
+    this.questions.add(questionsItem);
     return this;
   }
 
   /**
-   * Get cases
-   * @return cases
+   * Get questions
+   * @return questions
    **/
   @Schema(description = "")
       @Valid
-    public List<ModelCase> getCases() {
-    return cases;
+    public List<Question> getQuestions() {
+    return questions;
   }
 
-  public void setCases(List<ModelCase> cases) {
-    this.cases = cases;
+  public void setQuestions(List<Question> questions) {
+    this.questions = questions;
   }
 
 
@@ -81,23 +59,21 @@ public class Cases   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Cases cases = (Cases) o;
-    return Objects.equals(this.count, cases.count) &&
-        Objects.equals(this.cases, cases.cases);
+    Questions questions = (Questions) o;
+    return Objects.equals(this.questions, questions.questions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(count, cases);
+    return Objects.hash(questions);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Cases {\n");
+    sb.append("class Questions {\n");
     
-    sb.append("    count: ").append(toIndentedString(count)).append("\n");
-    sb.append("    cases: ").append(toIndentedString(cases)).append("\n");
+    sb.append("    questions: ").append(toIndentedString(questions)).append("\n");
     sb.append("}");
     return sb.toString();
   }

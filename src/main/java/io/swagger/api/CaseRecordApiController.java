@@ -152,63 +152,76 @@ public class CaseRecordApiController implements CaseRecordApi {
         for (FactRelationship factRelationship : factRelationships) {
             Integer domainId = factRelationship.getDomainConceptId2();
             Integer entityId = factRelationship.getFactId2();
-            if (domainId == 13L) {
+            if (domainId == 13L) { // Drug_Exposure
                 sql = "SELECT"
-                    + " d.drug_exposure_start_date AS Date,"
+                    + " d.drug_exposure_start_date AS startDate,"
+                    + " d.drug_exposure_end_date AS endDate,"
                     + " c.vocabulary_id AS System,"
                     + " c.concept_code AS Code,"
                     + " c.concept_name AS Display,"
-                    + " CONCAT('quantity:', d.quantity, ', refill:', d.refills) AS Value,"
-                    + " d.days_supply AS Unit,"
-                    + " d.drug_source_value AS Etc"
+                    + " d.refills AS Refills,"
+                    + " d.quantity AS Quantity,"
+                    + " d.days_supply AS DaysSupply,"
+                    + " d.sig AS Sig,"
+                    + " cr.vocabulary_id AS RouteSystem,"
+                    + " cr.concept_code AS RouteCode,"
+                    + " cr.concept_name AS RouteDisplay,"
+                    + " d.lot_number AS LotNumber"
                     + " FROM drug_exposure d join concept c on d.drug_concept_id = c.concept_id"
+                    + " left join concept cr on d.route_concept_id = cr.concept_id"
                     + " WHERE d.drug_exposure_id = " + entityId;
-            } else if (domainId == 19L) {
+            } else if (domainId == 19L) { // condition_occurrence
                 sql = "SELECT"
-                    + " cd.condition_start_date AS Date,"
+                    + " cd.condition_start_date AS startDate,"
+                    + " cd.condition_end_date AS endDate,"
                     + " c.vocabulary_id AS System,"
                     + " c.concept_code AS Code,"
                     + " c.concept_name AS Display,"
-                    + " CONCAT('') AS Value,"
-                    + " CONCAT('') AS Unit,"
-                    + " cd.condition_source_value AS Etc"
                     + " FROM condition_occurrence cd join concept c on cd.condition_concept_id = c.concept_id"
                     + " WHERE cd.condition_occurrence_id = " + entityId;
-            } else if (domainId == 27L) {
+            } else if (domainId == 27L) { // observation
                 sql = "SELECT"
                     + " o.observation_date AS Date,"
                     + " c.vocabulary_id AS System,"
                     + " c.concept_code AS Code,"
                     + " c.concept_name AS Display,"
-                    + " CONCAT(o.value_as_number,' ',o.value_as_string, ' ', cv.concept_name) AS Value,"
-                    + " cu.concept_name AS Unit,"
-                    + " CONCAT(o.observation_source_value, ' ', o.unit_source_value) AS Etc"
+                    + " o.value_as_number AS ValueAsNumber,"
+                    + " o.value_as_string AS ValueAsString,"
+                    + " cv.vocabulary_id AS ValueAsConceptSystem,"
+                    + " cv.concept_code AS ValueAsConceptCode,"
+                    + " cv.concept_name AS ValueAsConceptDisplay,"
+                    + " cu.concept_name AS Unit"
                     + " FROM observation o join concept c on o.observation_concept_id = c.concept_id"
                     + " left join concept cv on o.value_as_concept_id = cv.concept_id"
                     + " left join concept cu on o.unit_concept_id = cu.concept_id"
                     + " WHERE o.observation_id = " + entityId;
-            } else if (domainId == 21L) {
+            } else if (domainId == 21L) { // measurement
                 sql = "SELECT"
                     + " m.measurement_date AS Date,"
                     + " c.vocabulary_id AS System,"
                     + " c.concept_code AS Code,"
                     + " c.concept_name AS Display,"
-                    + " CONCAT(m.value_as_number, ' ', cv.concept_name) AS Value,"
-                    + " cu.concept_name AS Unit,"
-                    + " CONCAT(m.measurement_source_value, ' ', m.unit_source_value) AS Etc"
+                    + " co.concept_name AS Operator"
+                    + " m.value_as_number AS ValueAsNumber,"
+                    + " cv.vocabulary_id AS ValueAsConceptSystem,"
+                    + " cv.concept_code AS ValueAsConceptCode,"
+                    + " cv.concept_name AS ValueAsConceptDisplay,"
+                    + " cu.concept_name AS Unit"
+                    + " m.range_low AS RangeLow"
+                    + " m.range_high AS RangeHigh"
+                    + " m."
                     + " FROM measurement m join concept c on m.measurement_concept_id = c.concept_id"
                     + " left join concept cv on m.value_as_concept_id = cv.concept_id"
                     + " left join concept cu on m.unit_concept_id = cu.concept_id"
+                    + " left join concept co on m.operator_concept_id = co.concept_id"
                     + " WHERE m.measurement_id = " + entityId;
-            } else if (domainId == 5085L) {
+            } else if (domainId == 5085L) { // note
                 sql = "SELECT"
                     + " n.note_date AS Date,"
                     + " c.vocabulary_id AS System,"
                     + " c.concept_code AS Code,"
                     + " c.concept_name AS Display,"
-                    + " n.note_text AS Value,"
-                    + " CONCAT('') AS Unit,"
-                    + " n.note_source_value AS Etc"
+                    + " n.note_text AS Value"
                     + " FROM note n join concept c on n.note_type_concept_id = c.concept_id"
                     + " WHERE n.note_id = " + entityId;
             } else {

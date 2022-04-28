@@ -1,7 +1,6 @@
 package io.swagger.model;
 
 import java.util.Objects;
-import io.swagger.model.Detail;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -12,10 +11,10 @@ import javax.validation.constraints.*;
  * Details
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-22T21:38:13.301Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-28T01:04:53.602Z[GMT]")
 
 
-public class Details extends ArrayList<Detail>  {
+public class Details extends ArrayList<OneOfDetailsItems>  {
 
   @Override
   public boolean equals(java.lang.Object o) {
