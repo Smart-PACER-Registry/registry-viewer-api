@@ -62,7 +62,7 @@ public class CaseRecordApiController implements CaseRecordApi {
     public ResponseEntity<Void> addFlagOrAnnotation(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "case-id", required = true) Integer caseId,@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "content-id", required = true) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "Flag or annotation to add", schema=@Schema()) @Valid @RequestBody FlagAnnotation body) {
         String accept = request.getHeader("Accept");
         
-        String sql = "SELECT * FROM viewer_data";
+        String sql = "SELECT * FROM viewer_data WHERE observation_id = " + contentId + " AND case_id = " + caseId;
         List<ViewerData> viewerDatas = viewerJdbcTemplate.query(sql, new ViewerDataRowMapper());
         if (viewerDatas.size() > 0) {
             // Update
