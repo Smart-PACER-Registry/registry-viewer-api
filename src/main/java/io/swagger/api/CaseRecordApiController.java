@@ -85,7 +85,7 @@ public class CaseRecordApiController implements CaseRecordApi {
     }
 
     private Integer getConceptCodeForCategory(String category) {
-        List<Category> categories = viewerJdbcTemplate.query("SELECT * FROM category WHERE section='" + category + "'", new CategoryConceptCodeRowMapper());
+        List<Category> categories = viewerJdbcTemplate.query("SELECT c.concept_id AS ConceptId, c.section AS Section, c.category AS Category FROM category c WHERE section='" + category + "'", new CategoryConceptCodeRowMapper());
         if (categories.size()>0) {
             return categories.get(0).getConceptId();
         } else {
