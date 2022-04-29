@@ -62,7 +62,7 @@ public class CaseRecordApiController implements CaseRecordApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addFlagOrAnnotation(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "case-id", required = true) Integer caseId,@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "content-id", required = true) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "Flag or annotation to add", schema=@Schema()) @Valid @RequestBody FlagAnnotation body) {
+    public ResponseEntity<Void> addFlagOrAnnotation(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "caseId", required = true) Integer caseId,@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "contentId", required = true) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "Flag or annotation to add", schema=@Schema()) @Valid @RequestBody FlagAnnotation body) {
         String accept = request.getHeader("Accept");
         
         String sql = "SELECT * FROM viewer_data WHERE observation_id = " + contentId + " AND case_id = " + caseId;
@@ -238,7 +238,7 @@ public class CaseRecordApiController implements CaseRecordApi {
         content.setDetails(details);
     }
 
-    public ResponseEntity<CaseData> searchCategory(@NotNull @Parameter(in = ParameterIn.QUERY, description = "case-id for the category" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "case-id", required = true) String caseId,@Parameter(in = ParameterIn.QUERY, description = "sections to query for the case-id" ,schema=@Schema()) @Valid @RequestParam(value = "sections", required = false) String sections) {
+    public ResponseEntity<CaseData> searchCategory(@NotNull @Parameter(in = ParameterIn.QUERY, description = "case-id for the category" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "caseId", required = true) String caseId,@Parameter(in = ParameterIn.QUERY, description = "sections to query for the case-id" ,schema=@Schema()) @Valid @RequestParam(value = "sections", required = false) String sections) {
         String accept = request.getHeader("Accept");
         Integer caseIdInteger = Integer.valueOf(caseId);
 
