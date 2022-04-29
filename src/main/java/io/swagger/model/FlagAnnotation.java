@@ -3,6 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.model.FlagAnnotationAnnotation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
@@ -12,7 +13,7 @@ import javax.validation.constraints.*;
  * FlagAnnotation
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-28T01:04:53.602Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-29T13:57:35.834Z[GMT]")
 
 
 public class FlagAnnotation   {
@@ -20,7 +21,7 @@ public class FlagAnnotation   {
   private String flag = null;
 
   @JsonProperty("annotation")
-  private String annotation = null;
+  private FlagAnnotationAnnotation annotation = null;
 
   public FlagAnnotation flag(String flag) {
     this.flag = flag;
@@ -41,7 +42,7 @@ public class FlagAnnotation   {
     this.flag = flag;
   }
 
-  public FlagAnnotation annotation(String annotation) {
+  public FlagAnnotation annotation(FlagAnnotationAnnotation annotation) {
     this.annotation = annotation;
     return this;
   }
@@ -50,13 +51,14 @@ public class FlagAnnotation   {
    * Get annotation
    * @return annotation
    **/
-  @Schema(example = "add your annotation", description = "")
+  @Schema(description = "")
   
-    public String getAnnotation() {
+    @Valid
+    public FlagAnnotationAnnotation getAnnotation() {
     return annotation;
   }
 
-  public void setAnnotation(String annotation) {
+  public void setAnnotation(FlagAnnotationAnnotation annotation) {
     this.annotation = annotation;
   }
 

@@ -9,55 +9,55 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Question
+ * FlagAnnotationAnnotation
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-29T13:57:35.834Z[GMT]")
 
 
-public class Question   {
-  @JsonProperty("conceptId")
-  private Integer conceptId = null;
+public class FlagAnnotationAnnotation   {
+  @JsonProperty("text")
+  private String text = null;
 
-  @JsonProperty("question")
-  private String question = null;
+  @JsonProperty("userId")
+  private Integer userId = null;
 
-  public Question conceptId(Integer conceptId) {
-    this.conceptId = conceptId;
+  public FlagAnnotationAnnotation text(String text) {
+    this.text = text;
     return this;
   }
 
   /**
-   * Get conceptId
-   * @return conceptId
+   * Get text
+   * @return text
    **/
-  @Schema(example = "2000000001", description = "")
+  @Schema(example = "add your annotation", description = "")
   
-    public Integer getConceptId() {
-    return conceptId;
+    public String getText() {
+    return text;
   }
 
-  public void setConceptId(Integer conceptId) {
-    this.conceptId = conceptId;
+  public void setText(String text) {
+    this.text = text;
   }
 
-  public Question question(String question) {
-    this.question = question;
+  public FlagAnnotationAnnotation userId(Integer userId) {
+    this.userId = userId;
     return this;
   }
 
   /**
-   * Get question
-   * @return question
+   * Get userId
+   * @return userId
    **/
-  @Schema(example = "Symptoms", description = "")
+  @Schema(example = "1", description = "")
   
-    public String getQuestion() {
-    return question;
+    public Integer getUserId() {
+    return userId;
   }
 
-  public void setQuestion(String question) {
-    this.question = question;
+  public void setUserId(Integer userId) {
+    this.userId = userId;
   }
 
 
@@ -69,23 +69,23 @@ public class Question   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Question question = (Question) o;
-    return Objects.equals(this.conceptId, question.conceptId) &&
-        Objects.equals(this.question, question.question);
+    FlagAnnotationAnnotation flagAnnotationAnnotation = (FlagAnnotationAnnotation) o;
+    return Objects.equals(this.text, flagAnnotationAnnotation.text) &&
+        Objects.equals(this.userId, flagAnnotationAnnotation.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(conceptId, question);
+    return Objects.hash(text, userId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Question {\n");
+    sb.append("class FlagAnnotationAnnotation {\n");
     
-    sb.append("    conceptId: ").append(toIndentedString(conceptId)).append("\n");
-    sb.append("    question: ").append(toIndentedString(question)).append("\n");
+    sb.append("    text: ").append(toIndentedString(text)).append("\n");
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

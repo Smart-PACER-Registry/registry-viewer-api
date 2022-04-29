@@ -3,9 +3,12 @@ package io.swagger.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.model.Annotation;
 import io.swagger.model.Details;
 import io.swagger.model.Value;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -14,7 +17,7 @@ import javax.validation.constraints.*;
  * Content
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-28T01:04:53.602Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-29T13:57:35.834Z[GMT]")
 
 
 public class Content   {
@@ -43,7 +46,8 @@ public class Content   {
   private String flag = null;
 
   @JsonProperty("annotation")
-  private String annotation = null;
+  @Valid
+  private List<Annotation> annotation = null;
 
   @JsonProperty("details")
   private Details details = null;
@@ -202,8 +206,16 @@ public class Content   {
     this.flag = flag;
   }
 
-  public Content annotation(String annotation) {
+  public Content annotation(List<Annotation> annotation) {
     this.annotation = annotation;
+    return this;
+  }
+
+  public Content addAnnotationItem(Annotation annotationItem) {
+    if (this.annotation == null) {
+      this.annotation = new ArrayList<Annotation>();
+    }
+    this.annotation.add(annotationItem);
     return this;
   }
 
@@ -211,13 +223,13 @@ public class Content   {
    * Get annotation
    * @return annotation
    **/
-  @Schema(example = "add some annotations here", description = "")
-  
-    public String getAnnotation() {
+  @Schema(description = "")
+      @Valid
+    public List<Annotation> getAnnotation() {
     return annotation;
   }
 
-  public void setAnnotation(String annotation) {
+  public void setAnnotation(List<Annotation> annotation) {
     this.annotation = annotation;
   }
 

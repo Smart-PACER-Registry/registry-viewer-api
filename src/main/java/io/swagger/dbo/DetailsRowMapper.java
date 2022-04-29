@@ -6,11 +6,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.fasterxml.jackson.databind.util.StdDateFormat;
-
 import org.springframework.jdbc.core.RowMapper;
 
-import io.swagger.model.Coding;
 import io.swagger.model.DetailCondition;
 import io.swagger.model.DetailMeasurement;
 import io.swagger.model.DetailMedication;
@@ -136,6 +133,7 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
 
             retVal = detailObservation;
         } else if ("measurement".equals(entity_type)) {
+            String valueAsString = "";
             DetailMeasurement detailMeasurement = new DetailMeasurement();
             Date date = rs.getDate("Date");
             if (date != null) {
@@ -150,8 +148,9 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             
             String valueAsConceptCode = rs.getString("ValueAsConceptCode");
             Double valueAsNumber = rs.getDouble("ValueAsNumber");
-            if (rs.wasNull())
+            if (rs.wasNull()) {
                 valueAsNumber = null;
+            }
             if (valueAsConceptCode != null && !valueAsConceptCode.isEmpty()) {
                 detailMeasurement.setValue(rs.getString("ValueAsConceptDisplay"));
                 detailMeasurement.setTableDisplayText(
@@ -159,9 +158,16 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             } else if (valueAsNumber != null) {
                 String value = ((rs.getString("Operator")==null?"":rs.getString("Operator") + " ") + valueAsNumber).trim();
                 detailMeasurement.setValue(value);
-                detailMeasurement.setTableDisplayText(rs.getString("Display") + " | " + String.valueOf(valueAsNumber));
+                detailMeasurement.setTableDisplayText(rs.getString("Display") + " | " + valueAsNumber);
             }  else {
-                detailMeasurement.setTableDisplayText(rs.getString("Display"));
+                // check if we have something in the value_string_value column.
+                String valueSourceValue = rs.getString("ValueSourceValue");
+                if (valueSourceValue != null && !valueSourceValue.isEmpty()) {
+                    detailMeasurement.setValue(valueSourceValue);
+                    detailMeasurement.setTableDisplayText(rs.getString("Display") + " | " + valueSourceValue);
+                } else {
+                    detailMeasurement.setTableDisplayText(rs.getString("Display"));
+                }
             }
 
             if (rs.getString("Unit") != null)
@@ -186,7 +192,7 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             detailNote.setSystem(rs.getString("System"));
             detailNote.setCode(rs.getString("Code"));
             detailNote.setDisplay(rs.getString("Display"));
-            detailNote.setValue(rs.getString("Value"));
+            detailNote.setNoteText(rs.getString("Value"));
 
             retVal = detailNote;
         }

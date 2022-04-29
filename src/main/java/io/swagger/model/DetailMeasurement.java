@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * DetailMeasurement
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-28T01:04:53.602Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-29T13:57:35.834Z[GMT]")
 
 
 public class DetailMeasurement  implements OneOfDetailsItems {
@@ -109,7 +109,7 @@ public class DetailMeasurement  implements OneOfDetailsItems {
    * Get display
    * @return display
    **/
-  @Schema(example = "T Pallidumn TiterR", description = "")
+  @Schema(example = "Reagin Ab [Presence] in Serum by RPR", description = "")
   
     public String getDisplay() {
     return display;
@@ -204,7 +204,7 @@ public class DetailMeasurement  implements OneOfDetailsItems {
    * Get tableDisplayText
    * @return tableDisplayText
    **/
-  @Schema(example = "T Pallidumn Titer | 5534", description = "")
+  @Schema(example = "Reagin Ab [Presence] in Serum by RPR | value", description = "")
   
     public String getTableDisplayText() {
     return tableDisplayText;

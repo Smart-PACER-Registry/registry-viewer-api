@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * DetailObservation
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-28T01:04:53.602Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-29T13:57:35.834Z[GMT]")
 
 
 public class DetailObservation  implements OneOfDetailsItems {
@@ -141,7 +141,7 @@ public class DetailObservation  implements OneOfDetailsItems {
    * Get unit
    * @return unit
    **/
-  @Schema(example = "unit", description = "")
+  @Schema(description = "")
   
     public String getUnit() {
     return unit;
@@ -160,7 +160,7 @@ public class DetailObservation  implements OneOfDetailsItems {
    * Get tableDisplayText
    * @return tableDisplayText
    **/
-  @Schema(example = "Reagin Ab [Presence] in Serum by RPR | Reactive", description = "")
+  @Schema(example = "Reagin Ab [Presence] in Serum by RPR | value", description = "")
   
     public String getTableDisplayText() {
     return tableDisplayText;

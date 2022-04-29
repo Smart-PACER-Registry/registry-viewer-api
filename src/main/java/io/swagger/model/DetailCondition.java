@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * DetailCondition
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-28T01:04:53.602Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-29T13:57:35.834Z[GMT]")
 
 
 public class DetailCondition  implements OneOfDetailsItems {
@@ -138,7 +138,7 @@ public class DetailCondition  implements OneOfDetailsItems {
    * Get tableDisplayText
    * @return tableDisplayText
    **/
-  @Schema(example = "Reagin Ab [Presence] in Serum by RPR", description = "")
+  @Schema(example = "Reagin Ab [Presence] in Serum by RPR | value", description = "")
   
     public String getTableDisplayText() {
     return tableDisplayText;

@@ -5,6 +5,7 @@ import io.swagger.dbo.CaseDataRowMapper;
 import io.swagger.dbo.DetailsRowMapper;
 import io.swagger.dbo.FactRelationshipRowMapper;
 import io.swagger.dbo.ViewerDataRowMapper;
+import io.swagger.model.Annotation;
 import io.swagger.model.CaseData;
 import io.swagger.model.Category;
 import io.swagger.model.Content;
@@ -205,6 +206,7 @@ public class CaseRecordApiController implements CaseRecordApi {
                     + " c.concept_name AS Display,"
                     + " co.concept_name AS Operator,"
                     + " m.value_as_number AS ValueAsNumber,"
+                    + " m.value_source_value AS ValueSourceValue,"
                     + " cv.vocabulary_id AS ValueAsConceptSystem,"
                     + " cv.concept_code AS ValueAsConceptCode,"
                     + " cv.concept_name AS ValueAsConceptDisplay,"
@@ -264,8 +266,11 @@ public class CaseRecordApiController implements CaseRecordApi {
                     String annotation = viewerData.getAnnotation();
                     if (flag != null && !flag.isEmpty() && !"null".equalsIgnoreCase(flag))
                         content.setFlag(viewerData.getFlag());
-                    if (annotation != null && !annotation.isEmpty() && !"null".equalsIgnoreCase(annotation))
-                        content.setAnnotation(viewerData.getAnnotation());
+                    if (annotation != null && !annotation.isEmpty() && !"null".equalsIgnoreCase(annotation)) {
+                        Annotation annotationItem = new Annotation();
+                        annotationItem.setText(viewerData.getAnnotation());
+                        content.addAnnotationItem(annotationItem);
+                    }
                 }
                 addDetails(content);
             }

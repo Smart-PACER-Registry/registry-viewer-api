@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * DetailNote
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-28T01:04:53.602Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-29T13:57:35.834Z[GMT]")
 
 
 public class DetailNote  implements OneOfDetailsItems {
@@ -28,8 +28,8 @@ public class DetailNote  implements OneOfDetailsItems {
   @JsonProperty("display")
   private String display = null;
 
-  @JsonProperty("value")
-  private String value = null;
+  @JsonProperty("noteText")
+  private String noteText = null;
 
   @JsonProperty("tableDisplayText")
   private String tableDisplayText = null;
@@ -100,7 +100,7 @@ public class DetailNote  implements OneOfDetailsItems {
    * Get display
    * @return display
    **/
-  @Schema(example = "Note Type", description = "")
+  @Schema(example = "Reagin Ab [Presence] in Serum by RPR", description = "")
   
     public String getDisplay() {
     return display;
@@ -110,23 +110,23 @@ public class DetailNote  implements OneOfDetailsItems {
     this.display = display;
   }
 
-  public DetailNote value(String value) {
-    this.value = value;
+  public DetailNote noteText(String noteText) {
+    this.noteText = noteText;
     return this;
   }
 
   /**
-   * Get value
-   * @return value
+   * Get noteText
+   * @return noteText
    **/
   @Schema(example = "Reactive", description = "")
   
-    public String getValue() {
-    return value;
+    public String getNoteText() {
+    return noteText;
   }
 
-  public void setValue(String value) {
-    this.value = value;
+  public void setNoteText(String noteText) {
+    this.noteText = noteText;
   }
 
   public DetailNote tableDisplayText(String tableDisplayText) {
@@ -138,7 +138,7 @@ public class DetailNote  implements OneOfDetailsItems {
    * Get tableDisplayText
    * @return tableDisplayText
    **/
-  @Schema(description = "")
+  @Schema(example = "Reagin Ab [Presence] in Serum by RPR | value", description = "")
   
     public String getTableDisplayText() {
     return tableDisplayText;
@@ -162,13 +162,13 @@ public class DetailNote  implements OneOfDetailsItems {
         Objects.equals(this.system, detailNote.system) &&
         Objects.equals(this.code, detailNote.code) &&
         Objects.equals(this.display, detailNote.display) &&
-        Objects.equals(this.value, detailNote.value) &&
+        Objects.equals(this.noteText, detailNote.noteText) &&
         Objects.equals(this.tableDisplayText, detailNote.tableDisplayText);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(date, system, code, display, value, tableDisplayText);
+    return Objects.hash(date, system, code, display, noteText, tableDisplayText);
   }
 
   @Override
@@ -180,7 +180,7 @@ public class DetailNote  implements OneOfDetailsItems {
     sb.append("    system: ").append(toIndentedString(system)).append("\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    display: ").append(toIndentedString(display)).append("\n");
-    sb.append("    value: ").append(toIndentedString(value)).append("\n");
+    sb.append("    noteText: ").append(toIndentedString(noteText)).append("\n");
     sb.append("    tableDisplayText: ").append(toIndentedString(tableDisplayText)).append("\n");
     sb.append("}");
     return sb.toString();
