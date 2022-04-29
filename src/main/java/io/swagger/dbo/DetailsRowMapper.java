@@ -16,29 +16,38 @@ import io.swagger.model.DetailObservation;
 import io.swagger.model.OneOfDetailsItems;
 
 public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
-    private String entity_type;
+    private String entityType;
+    private String shortDisplay;
 
     public DetailsRowMapper(Integer domainId) {
         if (domainId == 13L) {
-            entity_type = "drug_exposure";
+            entityType = "drug_exposure";
         } else if (domainId == 19L) {
-            entity_type = "condition_occurrence";
+            entityType = "condition_occurrence";
         } else if (domainId == 27L) {
-            entity_type = "observation";
+            entityType = "observation";
         } else if (domainId == 21L) {
-            entity_type = "measurement";
+            entityType = "measurement";
         } else if (domainId == 5085L) {
-            entity_type = "note";
+            entityType = "note";
         } else {
-            entity_type = null;
+            entityType = null;
         }
+    }
+
+    public String getShortDisplay() {
+        return this.shortDisplay;
+    }
+
+    public void setShortDisplay(String shortDisplay) {
+        this.shortDisplay = shortDisplay;
     }
 
     @Override
     public OneOfDetailsItems mapRow(ResultSet rs, int rowNum) throws SQLException {
         OneOfDetailsItems retVal = null;
 
-        if ("drug_exposure".equals(entity_type)) {
+        if ("drug_exposure".equals(entityType)) {
             DetailMedication detailMed = new DetailMedication();
             Date startDate = rs.getDate("startDate");
             if (startDate != null) {
@@ -69,7 +78,7 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
                 rs.getString("Sig")).trim());
 
             retVal = detailMed;
-        } else if ("condition_occurrence".equals(entity_type)) {
+        } else if ("condition_occurrence".equals(entityType)) {
             DetailCondition detailCondition = new DetailCondition();
             Date startDate = rs.getDate("startDate");
             if (startDate != null) {
@@ -91,7 +100,7 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             detailCondition.setTableDisplayText(rs.getString("Display"));
 
             retVal = detailCondition;
-        } else if ("observation".equals(entity_type)) {
+        } else if ("observation".equals(entityType)) {
             DetailObservation detailObservation = new DetailObservation();
             Date date = rs.getDate("Date");
             if (date != null) {
@@ -132,8 +141,7 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
                 detailObservation.setUnit(rs.getString("Unit"));
 
             retVal = detailObservation;
-        } else if ("measurement".equals(entity_type)) {
-            String valueAsString = "";
+        } else if ("measurement".equals(entityType)) {
             DetailMeasurement detailMeasurement = new DetailMeasurement();
             Date date = rs.getDate("Date");
             if (date != null) {
@@ -180,7 +188,7 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             if (!rs.wasNull())
                 detailMeasurement.setRangeHigh(rangeHigh);
             retVal = detailMeasurement;
-        } else if ("note".equals(entity_type)) {
+        } else if ("note".equals(entityType)) {
             DetailNote detailNote = new DetailNote();
             Date date = rs.getDate("Date");
             if (date != null) {
@@ -194,6 +202,10 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             detailNote.setDisplay(rs.getString("Display"));
             detailNote.setNoteText(rs.getString("Value"));
 
+            if (shortDisplay != null && !shortDisplay.isEmpty()) {
+                detailNote.setTableDisplayText(shortDisplay);
+            }
+            
             retVal = detailNote;
         }
 

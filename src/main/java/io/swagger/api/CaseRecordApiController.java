@@ -232,7 +232,10 @@ public class CaseRecordApiController implements CaseRecordApi {
                 continue;
             }
 
-            details.addAll(registryJdbcTemplate.query(sql, new DetailsRowMapper(domainId)));            
+            DetailsRowMapper detailsRowMapper = new DetailsRowMapper(domainId);
+            detailsRowMapper.setShortDisplay(content.getDerivedValue().getValue());
+            
+            details.addAll(registryJdbcTemplate.query(sql, detailsRowMapper));            
         }
 
         content.setDetails(details);
