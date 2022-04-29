@@ -109,6 +109,8 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             
             String valueAsConceptCode = rs.getString("ValueAsConceptCode");
             Double valueAsNumber = rs.getDouble("ValueAsNumber");
+            if (rs.wasNull())
+                valueAsNumber = null;
             String valueAsString = rs.getString("ValueAsString");
             if (valueAsConceptCode != null && !valueAsConceptCode.isEmpty()) {
                 detailObservation.setValue (rs.getString("ValueAsConceptDisplay"));
@@ -124,10 +126,13 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
                 detailObservation.setTableDisplayText(tableDispText);
             } else if (valueAsString != null && !valueAsString.isEmpty()) {
                 detailObservation.setValue(valueAsString);
-                detailObservation.setTableDisplayText(rs.getString(("Display") + " | " + valueAsString));
+                detailObservation.setTableDisplayText(rs.getString("Display") + " | " + valueAsString);
+            } else {
+                detailObservation.setTableDisplayText(rs.getString("Display"));
             }
 
-            detailObservation.setUnit(rs.getString("Unit"));
+            if (rs.getString("Unit") != null)
+                detailObservation.setUnit(rs.getString("Unit"));
 
             retVal = detailObservation;
         } else if ("measurement".equals(entity_type)) {
@@ -145,18 +150,29 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             
             String valueAsConceptCode = rs.getString("ValueAsConceptCode");
             Double valueAsNumber = rs.getDouble("ValueAsNumber");
+            if (rs.wasNull())
+                valueAsNumber = null;
             if (valueAsConceptCode != null && !valueAsConceptCode.isEmpty()) {
                 detailMeasurement.setValue(rs.getString("ValueAsConceptDisplay"));
                 detailMeasurement.setTableDisplayText(
                     rs.getString("Display") + " | " + rs.getString("ValueAsConceptDisplay"));
             } else if (valueAsNumber != null) {
-                detailMeasurement.setValue((rs.getString("Operator") + " " + String.valueOf(valueAsNumber)).trim());
+                String value = ((rs.getString("Operator")==null?"":rs.getString("Operator") + " ") + valueAsNumber).trim();
+                detailMeasurement.setValue(value);
                 detailMeasurement.setTableDisplayText(rs.getString("Display") + " | " + String.valueOf(valueAsNumber));
-            } 
-            detailMeasurement.setUnit(rs.getString("Unit"));
+            }  else {
+                detailMeasurement.setTableDisplayText(rs.getString("Display"));
+            }
 
-            detailMeasurement.setRangeLow(rs.getInt("RangeLow"));
-            detailMeasurement.setRangeHigh(rs.getInt("RangeHigh"));
+            if (rs.getString("Unit") != null)
+                detailMeasurement.setUnit(rs.getString("Unit"));
+
+            int rangeLow = rs.getInt("RangeLow");
+            if (!rs.wasNull())
+                detailMeasurement.setRangeLow(rangeLow);
+            int rangeHigh = rs.getInt("RangeHigh");
+            if (!rs.wasNull())
+                detailMeasurement.setRangeHigh(rangeHigh);
             retVal = detailMeasurement;
         } else if ("note".equals(entity_type)) {
             DetailNote detailNote = new DetailNote();

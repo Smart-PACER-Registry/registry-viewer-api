@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -201,7 +203,7 @@ public class CaseRecordApiController implements CaseRecordApi {
                     + " c.vocabulary_id AS System,"
                     + " c.concept_code AS Code,"
                     + " c.concept_name AS Display,"
-                    + " co.concept_name AS Operator"
+                    + " co.concept_name AS Operator,"
                     + " m.value_as_number AS ValueAsNumber,"
                     + " cv.vocabulary_id AS ValueAsConceptSystem,"
                     + " cv.concept_code AS ValueAsConceptCode,"
@@ -252,6 +254,7 @@ public class CaseRecordApiController implements CaseRecordApi {
             CaseDataRowMapper caseDataRowMapper = new CaseDataRowMapper(categoryConceptCodeRowMapper.getCategoryConceptMap());
             sql = createSearchSqlStatement(caseIdInteger, sections);
             List<Content> registryData = registryJdbcTemplate.query(sql, caseDataRowMapper);
+            registryData.removeAll(Collections.singletonList(null));
             
             // Add details to each content
             for (Content content : registryData) {

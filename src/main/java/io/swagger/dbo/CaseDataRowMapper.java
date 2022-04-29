@@ -59,9 +59,10 @@ public class CaseDataRowMapper implements RowMapper<Content> {
             value.setValue(derivedValues[0]);
         }
 
-        if (derivedValues.length == 5) {
-            value.setValue(derivedValues[3]);
-            value.setUnit(derivedValues[4]);
+        if (derivedValues.length >= 5) {
+            value.setValue(derivedValues[4]);
+            if (derivedValues.length == 6)
+                value.setUnit(derivedValues[5]);
         }
 
         return value;
@@ -69,7 +70,15 @@ public class CaseDataRowMapper implements RowMapper<Content> {
 
     @Override
     public Content mapRow(ResultSet rs, int rowNum) throws SQLException {
+        // Get section and category from conceptId
+        Category category = categoryConceptMap.get(rs.getInt("ObservationConceptId"));
+        if ("Demographics".equals(category.getSection())) {
+            return null;
+        }
+
         Content content = new Content();
+        content.setSection(category.getSection());
+        content.setCategory(category.getCategory());        
 
         content.setContentId(rs.getInt("ObservationId"));
         content.setQuestion(rs.getString("ObservationConceptName"));
@@ -98,11 +107,6 @@ public class CaseDataRowMapper implements RowMapper<Content> {
         derivedValues = obsValue.split("\\^");
         value = constructValue(derivedValues);
         content.setSourceValue(value);
-
-        // Get section and category from conceptId
-        Category category = categoryConceptMap.get(rs.getInt("ObservationConceptId"));
-        content.setSection(category.getSection());
-        content.setCategory(category.getCategory());
 
         return content;
     }
