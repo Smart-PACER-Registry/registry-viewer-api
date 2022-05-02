@@ -65,14 +65,14 @@ public class CaseRecordApiController implements CaseRecordApi {
     public ResponseEntity<Void> addFlagOrAnnotation(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "caseId", required = true) Integer caseId,@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "contentId", required = true) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "Flag or annotation to add", schema=@Schema()) @Valid @RequestBody FlagAnnotation body) {
         String accept = request.getHeader("Accept");
         
-        String sql = "SELECT * FROM viewer_data WHERE observation_id = " + contentId + " AND case_id = " + caseId;
+        String sql = "SELECT * FROM flag WHERE content_id = " + contentId + " AND case_id = " + caseId;
         List<ViewerData> viewerDatas = viewerJdbcTemplate.query(sql, new ViewerDataRowMapper());
         if (viewerDatas.size() > 0) {
             // Update
             sql = "UPDATE viewer_data SET"
                 + " flag = '" + body.getFlag() + "',"
                 + " annotation = '" + body.getAnnotation() + "'"
-                + " WHERE observation_id = " + contentId + " AND case_id = " + caseId;
+                + " WHERE content_id = " + contentId + " AND case_id = " + caseId;
             viewerJdbcTemplate.update(sql);
             return new ResponseEntity<Void>(HttpStatus.OK);
         } else {
@@ -247,7 +247,7 @@ public class CaseRecordApiController implements CaseRecordApi {
 
         if (accept != null && accept.contains("application/json")) {
             // Make map for viwer data
-            String sql = "SELECT observation_id, flag, annotation, case_id FROM viewer_data WHERE case_id = " + caseId;
+            String sql = "SELECT content_id, flag, case_id FROM flag WHERE case_id = " + caseId;
             ViewerDataRowMapper viewerDataRowMapping = new ViewerDataRowMapper();
             viewerJdbcTemplate.query(sql, viewerDataRowMapping);
             Map<Integer, ViewerData> resultUserDataMap = viewerDataRowMapping.getResultMap();
@@ -266,14 +266,8 @@ public class CaseRecordApiController implements CaseRecordApi {
                 ViewerData viewerData = resultUserDataMap.get(content.getContentId());
                 if (viewerData != null) {
                     String flag = viewerData.getFlag();
-                    String annotation = viewerData.getAnnotation();
                     if (flag != null && !flag.isEmpty() && !"null".equalsIgnoreCase(flag))
                         content.setFlag(viewerData.getFlag());
-                    if (annotation != null && !annotation.isEmpty() && !"null".equalsIgnoreCase(annotation)) {
-                        Annotation annotationItem = new Annotation();
-                        annotationItem.setText(viewerData.getAnnotation());
-                        content.addAnnotationItem(annotationItem);
-                    }
                 }
                 addDetails(content);
             }

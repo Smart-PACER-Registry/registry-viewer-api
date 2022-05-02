@@ -25,11 +25,10 @@ public class ViewerDataRowMapper implements RowMapper<ViewerData> {
     public ViewerData mapRow(ResultSet rs, int rowNum) throws SQLException {
         ViewerData viewerData = new ViewerData();
 
-        Integer obsKey = rs.getInt("observation_id");
+        Integer obsKey = rs.getInt("content_id");
 
         viewerData.setObservationId(obsKey);
         viewerData.setFlag(rs.getString("flag"));
-        viewerData.setAnnotation(rs.getString("annotation"));
         viewerData.setCaseId(rs.getInt("case_id"));
 
         resultMap.put(obsKey, viewerData);
