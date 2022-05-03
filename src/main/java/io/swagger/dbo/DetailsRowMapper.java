@@ -74,8 +74,9 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             detailMed.setRouteCode(rs.getString("RouteCode"));
             detailMed.setRouteDisplay(rs.getString("RouteDisplay"));
             detailMed.setLotNumber(rs.getString("LotNumber"));
-            detailMed.setTableDisplayText((rs.getString("Display") + " " + 
-                rs.getString("Sig")).trim());
+            String sig = rs.getString("Sig");
+            if (sig == null) sig = "";
+            detailMed.setTableDisplayText((rs.getString("Display") + " " + sig).trim());
 
             retVal = detailMed;
         } else if ("condition_occurrence".equals(entityType)) {
@@ -205,7 +206,7 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             if (shortDisplay != null && !shortDisplay.isEmpty()) {
                 detailNote.setTableDisplayText(shortDisplay);
             }
-            
+
             retVal = detailNote;
         }
 
