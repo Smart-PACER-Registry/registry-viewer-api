@@ -4,15 +4,17 @@ import io.swagger.dbo.CategoryConceptCodeRowMapper;
 import io.swagger.dbo.CaseDataRowMapper;
 import io.swagger.dbo.DetailsRowMapper;
 import io.swagger.dbo.FactRelationshipRowMapper;
-import io.swagger.dbo.ViewerDataRowMapper;
+import io.swagger.dbo.ViewerAnnotationRowMapper;
+import io.swagger.dbo.ViewerFlagRowMapper;
 import io.swagger.model.Annotation;
 import io.swagger.model.CaseData;
 import io.swagger.model.Category;
 import io.swagger.model.Content;
 import io.swagger.model.Details;
 import io.swagger.model.FactRelationship;
-import io.swagger.model.FlagAnnotation;
-import io.swagger.model.ViewerData;
+import io.swagger.model.UserFlagAnnotationManualData;
+import io.swagger.model.ViewerAnnotation;
+import io.swagger.model.ViewerFlag;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -62,28 +64,67 @@ public class CaseRecordApiController implements CaseRecordApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addFlagOrAnnotation(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "caseId", required = true) Integer caseId,@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "contentId", required = true) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "Flag or annotation to add", schema=@Schema()) @Valid @RequestBody FlagAnnotation body) {
+    public ResponseEntity<Void> addUserFlagAnnotationManualData(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "caseId", required = true) Integer caseId,@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "contentId", required = true) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "create or update flag, annotations, or user data", schema=@Schema()) @Valid @RequestBody UserFlagAnnotationManualData body) {
         String accept = request.getHeader("Accept");
         
+        // See if we have a flag information.
         String sql = "SELECT * FROM flag WHERE content_id = " + contentId + " AND case_id = " + caseId;
-        List<ViewerData> viewerDatas = viewerJdbcTemplate.query(sql, new ViewerDataRowMapper());
-        if (viewerDatas.size() > 0) {
-            // Update
-            sql = "UPDATE viewer_data SET"
-                + " flag = '" + body.getFlag() + "',"
-                + " annotation = '" + body.getAnnotation() + "'"
+        List<ViewerFlag> viewerFlags = viewerJdbcTemplate.query(sql, new ViewerFlagRowMapper());
+        boolean created = false;
+        String flag = body.getFlag();
+        if (viewerFlags.size() > 0 && flag != null && !flag.isEmpty() && !"null".equals(flag)) {
+            // we update flag. 
+            sql = "UPDATE flag SET flag = '" + flag + "'"
                 + " WHERE content_id = " + contentId + " AND case_id = " + caseId;
             viewerJdbcTemplate.update(sql);
-            return new ResponseEntity<Void>(HttpStatus.OK);
         } else {
-            sql = "INSERT INTO viewer_data"
-                + " (observation_id, flag, annotation, case_id)"
+            sql = "INSERT INTO flag"
+                + " (content_id, flag, case_id)"
                 + " VALUES (" + contentId + ","
                 + " '" + body.getFlag() + "',"
-                + " '" + body.getAnnotation() + "',"
                 + " " + caseId + ")";
             viewerJdbcTemplate.update(sql);
+            created = true;
+        }
+
+        // See if we need to create/update annotations
+        @Valid
+        List<Annotation> annotations = body.getAnnotations();
+        if (annotations != null) {
+            for (Annotation annotation : annotations) {
+                Integer annotationId = annotation.getAnnoationId();
+                if (annotationId == null || annotationId == 0) {
+                    if (annotation.getText() == null || annotation.getText().isEmpty()) {
+                        // nothing to do on the empty text.
+                        continue;
+                    }
+                    // this is new one.
+                    sql = "INSERT INTO annotation"
+                        + " (content_id, case_id, text)"
+                        + " VALUES (" + contentId + ","
+                        + " " + caseId + ","
+                        + " '" + annotation.getText() + "')";
+                    viewerJdbcTemplate.update(sql);
+                    created = true;
+                } else {
+                    // update
+                    if (annotation.getText() == null || annotation.getText().isEmpty()) {
+                        // empty text with annotation id. Delete this.
+                        sql = "DELETE FROM annotation WHERE annotation_id = " + annotationId;
+                    } else {
+                        sql = "UPDATE annotation SET text = '" + annotation.getText() + "'"
+                        + " WHERE annotation_id = " + annotationId;
+                    }
+
+                    viewerJdbcTemplate.update(sql);
+                }
+            }
+        }
+
+        if (created) {
             return new ResponseEntity<Void>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<Void>(HttpStatus.OK);
         }
     }
 
@@ -246,11 +287,16 @@ public class CaseRecordApiController implements CaseRecordApi {
         Integer caseIdInteger = Integer.valueOf(caseId);
 
         if (accept != null && accept.contains("application/json")) {
-            // Make map for viwer data
+            // Make map for viewer flag
             String sql = "SELECT content_id, flag, case_id FROM flag WHERE case_id = " + caseId;
-            ViewerDataRowMapper viewerDataRowMapping = new ViewerDataRowMapper();
-            viewerJdbcTemplate.query(sql, viewerDataRowMapping);
-            Map<Integer, ViewerData> resultUserDataMap = viewerDataRowMapping.getResultMap();
+            ViewerFlagRowMapper viewerFlagRowMapper = new ViewerFlagRowMapper();
+            viewerJdbcTemplate.query(sql, viewerFlagRowMapper);
+            Map<Integer, ViewerFlag> userFlagMap = viewerFlagRowMapper.getResultMap();
+
+            sql = "SELECT annotation_id, content_id, case_id, user_id, text, created FROM annotation WHERE case_id = " + caseId;
+            ViewerAnnotationRowMapper viewerAnnotationRowMapper = new ViewerAnnotationRowMapper();
+            viewerJdbcTemplate.query(sql, viewerAnnotationRowMapper);
+            Map<Integer, List<ViewerAnnotation>> userAnnotationMap = viewerAnnotationRowMapper.getResultMap();
 
             sql = "SELECT c.concept_id AS ConceptId, c.section AS Section, c.category AS Category FROM category c";
             CategoryConceptCodeRowMapper categoryConceptCodeRowMapper = new CategoryConceptCodeRowMapper();
@@ -263,12 +309,23 @@ public class CaseRecordApiController implements CaseRecordApi {
             
             // Add details to each content
             for (Content content : registryData) {
-                ViewerData viewerData = resultUserDataMap.get(content.getContentId());
+                ViewerFlag viewerData = userFlagMap.get(content.getContentId());
+                List<ViewerAnnotation> viewerAnnotations = userAnnotationMap.get(content.getContentId());
                 if (viewerData != null) {
                     String flag = viewerData.getFlag();
                     if (flag != null && !flag.isEmpty() && !"null".equalsIgnoreCase(flag))
                         content.setFlag(viewerData.getFlag());
                 }
+
+                if (viewerAnnotations != null) {
+                    for (ViewerAnnotation viewerAnnotation : viewerAnnotations) {
+                        Annotation annotation = new Annotation();
+                        annotation.setAnnoationId(viewerAnnotation.getAnnotationId());
+                        annotation.setText(viewerAnnotation.getText());
+                        content.addAnnotationItem(annotation);
+                    }
+                }
+
                 addDetails(content);
             }
 

@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * DetailCondition
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-04-29T13:57:35.834Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-03T02:26:15.041Z[GMT]")
 
 
 public class DetailCondition  implements OneOfDetailsItems {
