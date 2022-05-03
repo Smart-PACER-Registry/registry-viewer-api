@@ -72,7 +72,7 @@ public class CaseRecordApiController implements CaseRecordApi {
         List<ViewerFlag> viewerFlags = viewerJdbcTemplate.query(sql, new ViewerFlagRowMapper());
         boolean created = false;
         String flag = body.getFlag();
-        if (viewerFlags.size() > 0 && flag != null && !flag.isEmpty() && !"null".equals(flag)) {
+        if (viewerFlags.size() > 0) {
             // we update flag. 
             sql = "UPDATE flag SET flag = '" + flag + "'"
                 + " WHERE content_id = " + contentId + " AND case_id = " + caseId;
