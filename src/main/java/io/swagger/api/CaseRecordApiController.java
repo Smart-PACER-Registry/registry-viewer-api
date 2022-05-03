@@ -92,7 +92,7 @@ public class CaseRecordApiController implements CaseRecordApi {
         List<Annotation> annotations = body.getAnnotations();
         if (annotations != null) {
             for (Annotation annotation : annotations) {
-                Integer annotationId = annotation.getAnnoationId();
+                Integer annotationId = annotation.getAnnotationId();
                 if (annotationId == null || annotationId == 0) {
                     if (annotation.getText() == null || annotation.getText().isEmpty()) {
                         // nothing to do on the empty text.
@@ -320,7 +320,7 @@ public class CaseRecordApiController implements CaseRecordApi {
                 if (viewerAnnotations != null) {
                     for (ViewerAnnotation viewerAnnotation : viewerAnnotations) {
                         Annotation annotation = new Annotation();
-                        annotation.setAnnoationId(viewerAnnotation.getAnnotationId());
+                        annotation.setAnnotationId(viewerAnnotation.getAnnotationId());
                         annotation.setText(viewerAnnotation.getText());
                         content.addAnnotationItem(annotation);
                     }

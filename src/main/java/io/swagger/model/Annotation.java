@@ -12,33 +12,33 @@ import javax.validation.constraints.*;
  * Annotation
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-03T02:26:15.041Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-03T18:13:28.024Z[GMT]")
 
 
 public class Annotation   {
-  @JsonProperty("annoationId")
-  private Integer annoationId = null;
+  @JsonProperty("annotationId")
+  private Integer annotationId = null;
 
   @JsonProperty("text")
   private String text = null;
 
-  public Annotation annoationId(Integer annoationId) {
-    this.annoationId = annoationId;
+  public Annotation annotationId(Integer annotationId) {
+    this.annotationId = annotationId;
     return this;
   }
 
   /**
-   * Get annoationId
-   * @return annoationId
+   * Get annotationId
+   * @return annotationId
    **/
   @Schema(example = "1", description = "")
   
-    public Integer getAnnoationId() {
-    return annoationId;
+    public Integer getAnnotationId() {
+    return annotationId;
   }
 
-  public void setAnnoationId(Integer annoationId) {
-    this.annoationId = annoationId;
+  public void setAnnotationId(Integer annotationId) {
+    this.annotationId = annotationId;
   }
 
   public Annotation text(String text) {
@@ -70,13 +70,13 @@ public class Annotation   {
       return false;
     }
     Annotation annotation = (Annotation) o;
-    return Objects.equals(this.annoationId, annotation.annoationId) &&
+    return Objects.equals(this.annotationId, annotation.annotationId) &&
         Objects.equals(this.text, annotation.text);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(annoationId, text);
+    return Objects.hash(annotationId, text);
   }
 
   @Override
@@ -84,7 +84,7 @@ public class Annotation   {
     StringBuilder sb = new StringBuilder();
     sb.append("class Annotation {\n");
     
-    sb.append("    annoationId: ").append(toIndentedString(annoationId)).append("\n");
+    sb.append("    annotationId: ").append(toIndentedString(annotationId)).append("\n");
     sb.append("    text: ").append(toIndentedString(text)).append("\n");
     sb.append("}");
     return sb.toString();

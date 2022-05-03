@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * UserFlagAnnotationManualData
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-03T02:26:15.041Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-03T18:13:28.024Z[GMT]")
 
 
 public class UserFlagAnnotationManualData   {
