@@ -41,6 +41,32 @@ public class CaseDataRowMapper implements RowMapper<Content> {
         this.categoryConceptMap = categoryConceptMap;
     }
 
+    private String ratioInteger(String value) {
+        String[] values = value.split(":");
+        String numeratorString = "";
+        String denominatorString = "";
+        if (values.length == 2) {
+            try {
+                double numerator = Double.parseDouble(values[0]);
+                double denominator = Double.parseDouble(values[1]);
+
+                if (numerator/((int)numerator) == 1) {
+                    numeratorString = String.valueOf((int)numerator);
+                }
+
+                if (denominator/((int)denominator) == 1) {
+                    denominatorString = String.valueOf((int)denominator);
+                }
+            } catch (NumberFormatException nfe) {
+                return value;
+            }
+
+            return numeratorString + ":" + denominatorString;
+        } else {
+            return value;
+        }
+    }
+
     private Value constructValue(String[] derivedValues) {
         Value value = new Value();
         if (derivedValues.length == 3) {
@@ -56,11 +82,11 @@ public class CaseDataRowMapper implements RowMapper<Content> {
             coding.setDisplay(derivedValues[3]);
             value.setCoding(coding);
         } else {
-            value.setValue(derivedValues[0]);
+            value.setValue(ratioInteger(derivedValues[0]));
         }
 
         if (derivedValues.length >= 5) {
-            value.setValue(derivedValues[4]);
+            value.setValue(ratioInteger(derivedValues[4]));
             if (derivedValues.length == 6)
                 value.setUnit(derivedValues[5]);
         }
