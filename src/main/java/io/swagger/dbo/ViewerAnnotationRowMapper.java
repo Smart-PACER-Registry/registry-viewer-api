@@ -1,8 +1,11 @@
 package io.swagger.dbo;
 
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +35,13 @@ public class ViewerAnnotationRowMapper implements RowMapper<ViewerAnnotation> {
         viewerAnnotation.setContentId(contentId);
         viewerAnnotation.setCaseId(rs.getInt("case_id"));
         viewerAnnotation.setText(rs.getString("text"));
+
+        Date createdDate = rs.getDate("created");
+        if (createdDate != null) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            String value = dateFormat.format(createdDate);
+            viewerAnnotation.setDate(value);
+        }
 
         if (resultMap.containsKey(contentId) == false) {
             List<ViewerAnnotation> annotations = new ArrayList<ViewerAnnotation>();

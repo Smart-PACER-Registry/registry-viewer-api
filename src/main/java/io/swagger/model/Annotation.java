@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * Annotation
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-03T18:13:28.024Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-03T18:53:12.448Z[GMT]")
 
 
 public class Annotation   {
@@ -21,6 +21,9 @@ public class Annotation   {
 
   @JsonProperty("text")
   private String text = null;
+
+  @JsonProperty("date")
+  private String date = null;
 
   public Annotation annotationId(Integer annotationId) {
     this.annotationId = annotationId;
@@ -60,6 +63,25 @@ public class Annotation   {
     this.text = text;
   }
 
+  public Annotation date(String date) {
+    this.date = date;
+    return this;
+  }
+
+  /**
+   * Get date
+   * @return date
+   **/
+  @Schema(example = "2012-12-12", description = "")
+  
+    public String getDate() {
+    return date;
+  }
+
+  public void setDate(String date) {
+    this.date = date;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -71,12 +93,13 @@ public class Annotation   {
     }
     Annotation annotation = (Annotation) o;
     return Objects.equals(this.annotationId, annotation.annotationId) &&
-        Objects.equals(this.text, annotation.text);
+        Objects.equals(this.text, annotation.text) &&
+        Objects.equals(this.date, annotation.date);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(annotationId, text);
+    return Objects.hash(annotationId, text, date);
   }
 
   @Override
@@ -86,6 +109,7 @@ public class Annotation   {
     
     sb.append("    annotationId: ").append(toIndentedString(annotationId)).append("\n");
     sb.append("    text: ").append(toIndentedString(text)).append("\n");
+    sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("}");
     return sb.toString();
   }

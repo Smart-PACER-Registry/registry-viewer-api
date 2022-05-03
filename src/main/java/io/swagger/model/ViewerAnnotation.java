@@ -5,6 +5,7 @@ public class ViewerAnnotation {
     private Integer contentId;
     private String text;
     private Integer caseId;
+    private String date;
 
     public ViewerAnnotation() {
 
@@ -40,5 +41,13 @@ public class ViewerAnnotation {
 
     public Integer getCaseId() {
         return this.caseId;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDate() {
+        return this.date;
     }
 }

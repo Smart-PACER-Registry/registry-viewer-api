@@ -322,6 +322,7 @@ public class CaseRecordApiController implements CaseRecordApi {
                         Annotation annotation = new Annotation();
                         annotation.setAnnotationId(viewerAnnotation.getAnnotationId());
                         annotation.setText(viewerAnnotation.getText());
+                        annotation.setDate(viewerAnnotation.getDate());
                         content.addAnnotationItem(annotation);
                     }
                 }
