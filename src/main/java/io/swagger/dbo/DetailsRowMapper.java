@@ -133,7 +133,7 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
                 detailObservation.setTableDisplayText(tableDispText);
             } else if (valueAsString != null && !valueAsString.isEmpty()) {
                 detailObservation.setValue(valueAsString);
-                detailObservation.setTableDisplayText(rs.getString("Display") + " <font color='blue'>" + valueAsString + "</font>");
+                detailObservation.setTableDisplayText(rs.getString("Display") + " | " + valueAsString);
             } else {
                 detailObservation.setTableDisplayText(rs.getString("Display"));
             }
