@@ -12,15 +12,12 @@ import javax.validation.constraints.*;
  * MannualCaseData
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-03T18:13:28.024Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-05T05:59:28.112Z[GMT]")
 
 
 public class MannualCaseData   {
-  @JsonProperty("contentId")
-  private Integer contentId = null;
-
-  @JsonProperty("question")
-  private String question = null;
+  @JsonProperty("conceptId")
+  private Integer conceptId = null;
 
   @JsonProperty("value")
   private String value = null;
@@ -28,42 +25,23 @@ public class MannualCaseData   {
   @JsonProperty("date")
   private String date = null;
 
-  public MannualCaseData contentId(Integer contentId) {
-    this.contentId = contentId;
+  public MannualCaseData conceptId(Integer conceptId) {
+    this.conceptId = conceptId;
     return this;
   }
 
   /**
-   * Get contentId
-   * @return contentId
+   * Get conceptId
+   * @return conceptId
    **/
   @Schema(example = "1", description = "")
   
-    public Integer getContentId() {
-    return contentId;
+    public Integer getConceptId() {
+    return conceptId;
   }
 
-  public void setContentId(Integer contentId) {
-    this.contentId = contentId;
-  }
-
-  public MannualCaseData question(String question) {
-    this.question = question;
-    return this;
-  }
-
-  /**
-   * Get question
-   * @return question
-   **/
-  @Schema(example = "Lab Results", description = "")
-  
-    public String getQuestion() {
-    return question;
-  }
-
-  public void setQuestion(String question) {
-    this.question = question;
+  public void setConceptId(Integer conceptId) {
+    this.conceptId = conceptId;
   }
 
   public MannualCaseData value(String value) {
@@ -114,15 +92,14 @@ public class MannualCaseData   {
       return false;
     }
     MannualCaseData mannualCaseData = (MannualCaseData) o;
-    return Objects.equals(this.contentId, mannualCaseData.contentId) &&
-        Objects.equals(this.question, mannualCaseData.question) &&
+    return Objects.equals(this.conceptId, mannualCaseData.conceptId) &&
         Objects.equals(this.value, mannualCaseData.value) &&
         Objects.equals(this.date, mannualCaseData.date);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(contentId, question, value, date);
+    return Objects.hash(conceptId, value, date);
   }
 
   @Override
@@ -130,8 +107,7 @@ public class MannualCaseData   {
     StringBuilder sb = new StringBuilder();
     sb.append("class MannualCaseData {\n");
     
-    sb.append("    contentId: ").append(toIndentedString(contentId)).append("\n");
-    sb.append("    question: ").append(toIndentedString(question)).append("\n");
+    sb.append("    conceptId: ").append(toIndentedString(conceptId)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("}");

@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.util.StdDateFormat;
+
 import org.springframework.jdbc.core.RowMapper;
 
 import io.swagger.model.DetailCondition;
@@ -46,19 +48,18 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
     @Override
     public OneOfDetailsItems mapRow(ResultSet rs, int rowNum) throws SQLException {
         OneOfDetailsItems retVal = null;
+        DateFormat dateFormat = new SimpleDateFormat(StdDateFormat.DATE_FORMAT_STR_ISO8601);
 
         if ("drug_exposure".equals(entityType)) {
             DetailMedication detailMed = new DetailMedication();
             Date startDate = rs.getDate("startDate");
             if (startDate != null) {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 String value = dateFormat.format(startDate);
                 detailMed.setStartDate(value);
             }
 
             Date endDate = rs.getDate("endDate");
             if (endDate != null) {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 String value = dateFormat.format(endDate);
                 detailMed.setStartDate(value);
             }
@@ -83,14 +84,12 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             DetailCondition detailCondition = new DetailCondition();
             Date startDate = rs.getDate("startDate");
             if (startDate != null) {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 String value = dateFormat.format(startDate);
                 detailCondition.setStartDate(value);
             }
 
             Date endDate = rs.getDate("endDate");
             if (endDate != null) {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 String value = dateFormat.format(endDate);
                 detailCondition.setStartDate(value);
             }
@@ -105,7 +104,6 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             DetailObservation detailObservation = new DetailObservation();
             Date date = rs.getDate("Date");
             if (date != null) {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 String value = dateFormat.format(date);
                 detailObservation.setDate(value);
             }
@@ -146,7 +144,6 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             DetailMeasurement detailMeasurement = new DetailMeasurement();
             Date date = rs.getDate("Date");
             if (date != null) {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 String value = dateFormat.format(date);
                 detailMeasurement.setDate(value);
             }
@@ -193,7 +190,6 @@ public class DetailsRowMapper implements RowMapper<OneOfDetailsItems> {
             DetailNote detailNote = new DetailNote();
             Date date = rs.getDate("Date");
             if (date != null) {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 String value = dateFormat.format(date);
                 detailNote.setDate(value);
             }

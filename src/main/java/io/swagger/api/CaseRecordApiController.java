@@ -4,14 +4,17 @@ import io.swagger.dbo.CategoryConceptCodeRowMapper;
 import io.swagger.dbo.CaseDataRowMapper;
 import io.swagger.dbo.DetailsRowMapper;
 import io.swagger.dbo.FactRelationshipRowMapper;
+import io.swagger.dbo.RegistryCaseInfoRowMapper;
 import io.swagger.dbo.ViewerAnnotationRowMapper;
 import io.swagger.dbo.ViewerFlagRowMapper;
 import io.swagger.model.Annotation;
 import io.swagger.model.CaseData;
+import io.swagger.model.CaseInfo;
 import io.swagger.model.Category;
 import io.swagger.model.Content;
 import io.swagger.model.Details;
 import io.swagger.model.FactRelationship;
+import io.swagger.model.MannualCaseData;
 import io.swagger.model.UserFlagAnnotationManualData;
 import io.swagger.model.ViewerAnnotation;
 import io.swagger.model.ViewerFlag;
@@ -35,7 +38,10 @@ import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -66,25 +72,28 @@ public class CaseRecordApiController implements CaseRecordApi {
 
     public ResponseEntity<Void> addUserFlagAnnotationManualData(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "caseId", required = true) Integer caseId,@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "contentId", required = true) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "create or update flag, annotations, or user data", schema=@Schema()) @Valid @RequestBody UserFlagAnnotationManualData body) {
         String accept = request.getHeader("Accept");
-        
+        String sql;
+
         // See if we have a flag information.
-        String sql = "SELECT * FROM flag WHERE content_id = " + contentId + " AND case_id = " + caseId;
-        List<ViewerFlag> viewerFlags = viewerJdbcTemplate.query(sql, new ViewerFlagRowMapper());
         boolean created = false;
         String flag = body.getFlag();
-        if (viewerFlags.size() > 0) {
-            // we update flag. 
-            sql = "UPDATE flag SET flag = '" + flag + "'"
-                + " WHERE content_id = " + contentId + " AND case_id = " + caseId;
-            viewerJdbcTemplate.update(sql);
-        } else {
-            sql = "INSERT INTO flag"
-                + " (content_id, flag, case_id)"
-                + " VALUES (" + contentId + ","
-                + " '" + body.getFlag() + "',"
-                + " " + caseId + ")";
-            viewerJdbcTemplate.update(sql);
-            created = true;
+        if (!"Unknown".equals(flag)) {
+            sql = "SELECT * FROM flag WHERE content_id = " + contentId + " AND case_id = " + caseId;
+            List<ViewerFlag> viewerFlags = viewerJdbcTemplate.query(sql, new ViewerFlagRowMapper());
+            if (viewerFlags.size() > 0) {
+                // we update flag. 
+                sql = "UPDATE flag SET flag = '" + flag + "'"
+                    + " WHERE content_id = " + contentId + " AND case_id = " + caseId;
+                viewerJdbcTemplate.update(sql);
+            } else {
+                sql = "INSERT INTO flag"
+                    + " (content_id, flag, case_id)"
+                    + " VALUES (" + contentId + ","
+                    + " '" + body.getFlag() + "',"
+                    + " " + caseId + ")";
+                viewerJdbcTemplate.update(sql);
+                created = true;
+            }
         }
 
         // See if we need to create/update annotations
@@ -118,6 +127,50 @@ public class CaseRecordApiController implements CaseRecordApi {
 
                     viewerJdbcTemplate.update(sql);
                 }
+            }
+        }
+
+        @Valid
+        List<MannualCaseData> manualCaseDatas = body.getMannualCaseData();
+        if (manualCaseDatas != null) {
+            // Get patient id.
+            sql = "SELECT person_id AS PersonId FROM case_info WHERE case_info_id = " + caseId;
+            List<CaseInfo> caseInfos = registryJdbcTemplate.query(sql, new RegistryCaseInfoRowMapper());
+            if (caseInfos.isEmpty()) {
+                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            }
+
+            Integer personId = caseInfos.get(0).getPersonId();
+            for (MannualCaseData mannualCaseData : manualCaseDatas) {
+                Integer conceptId = mannualCaseData.getConceptId();
+                String value = mannualCaseData.getValue();
+                String dateString = mannualCaseData.getDate();
+                
+
+                // Date date = new Date();
+                // if (dateString != null && !dateString.isEmpty()) {
+                //     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                //     try {
+                //         date = sdf.parse(dateString);
+                //     } catch (ParseException e) {
+                //         e.printStackTrace();
+                //         continue;
+                //     }
+                // }
+
+                sql = "INSERT INTO observation (observation_id, person_id,"
+                    + " observation_date, observation_concept_id,"
+                    + " observation_type_concept_id, value_as_string, observation_source_value) SELECT"
+                    + " coalesce(max(observation_id), 0)+1,"
+                    + " " + personId + ","
+                    + " '" + dateString + "',"
+                    + " " + conceptId + ","
+                    + " 36685765,"
+                    + " '" + value + "',"
+                    + " '" + value + "'"
+                    + " FROM observation";
+                registryJdbcTemplate.update(sql);
+                created = true;
             }
         }
 

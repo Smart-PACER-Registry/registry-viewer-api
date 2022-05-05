@@ -22,7 +22,7 @@ public class CaseRowMapper implements RowMapper<ModelCase> {
         modelCase.setCaseId(rs.getInt("CaseId"));
 
         Date initialReportDate = rs.getDate("InitialRecordDate");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        DateFormat dateFormat = new SimpleDateFormat(StdDateFormat.DATE_FORMAT_STR_ISO8601);
         String initialReportDateString = dateFormat.format(initialReportDate);
         modelCase.setInitialReportDate(initialReportDateString);
         

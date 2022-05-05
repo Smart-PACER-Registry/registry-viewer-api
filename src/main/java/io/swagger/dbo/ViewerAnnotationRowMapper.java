@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.util.StdDateFormat;
+
 import org.springframework.jdbc.core.RowMapper;
 
 import io.swagger.model.ViewerAnnotation;
@@ -38,7 +40,7 @@ public class ViewerAnnotationRowMapper implements RowMapper<ViewerAnnotation> {
 
         Date createdDate = rs.getDate("created");
         if (createdDate != null) {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            DateFormat dateFormat = new SimpleDateFormat(StdDateFormat.DATE_FORMAT_STR_ISO8601);
             String value = dateFormat.format(createdDate);
             viewerAnnotation.setDate(value);
         }
