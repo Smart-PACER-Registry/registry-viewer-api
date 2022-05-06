@@ -12,21 +12,21 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import io.swagger.model.Category;
 import io.swagger.model.Coding;
 import io.swagger.model.Content;
+import io.swagger.model.Question;
 import io.swagger.model.Value;
 
 public class CaseDataRowMapper implements RowMapper<Content> {
     private Integer caseId;
     private Integer personId;
-    private Map<Integer, Category> categoryConceptMap;
+    private Map<Integer, Question> questionMap;
 
     public CaseDataRowMapper() {
     }
     
-    public CaseDataRowMapper(Map<Integer, Category> categoryConceptMap) {
-        this.categoryConceptMap = categoryConceptMap;
+    public CaseDataRowMapper(Map<Integer, Question> questionMap) {
+        this.questionMap = questionMap;
     }
 
     public Integer getCaseId() {
@@ -37,8 +37,8 @@ public class CaseDataRowMapper implements RowMapper<Content> {
         return this.personId;
     }
 
-    public void setCategoryConceptMap(Map<Integer, Category> categoryConceptMap) {
-        this.categoryConceptMap = categoryConceptMap;
+    public void setCategoryConceptMap(Map<Integer, Question> questionMap) {
+        this.questionMap = questionMap;
     }
 
     private String ratioInteger(String value) {
@@ -97,14 +97,14 @@ public class CaseDataRowMapper implements RowMapper<Content> {
     @Override
     public Content mapRow(ResultSet rs, int rowNum) throws SQLException {
         // Get section and category from conceptId
-        Category category = categoryConceptMap.get(rs.getInt("ObservationConceptId"));
-        if ("Demographics".equals(category.getSection())) {
+        Question question = questionMap.get(rs.getInt("ObservationConceptId"));
+        if ("Demographics".equals(question.getSection())) {
             return null;
         }
 
         Content content = new Content();
-        content.setSection(category.getSection());
-        content.setCategory(category.getCategory());        
+        content.setSection(question.getSection());
+        content.setCategory(question.getCategory());        
 
         content.setContentId(rs.getInt("ObservationId"));
         content.setQuestion(rs.getString("ObservationConceptName"));

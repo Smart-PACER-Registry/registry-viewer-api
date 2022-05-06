@@ -1,6 +1,6 @@
 package io.swagger.api;
 
-import io.swagger.dbo.CategoryConceptCodeRowMapper;
+import io.swagger.dbo.QuestionRowMapper;
 import io.swagger.dbo.CaseDataRowMapper;
 import io.swagger.dbo.DetailsRowMapper;
 import io.swagger.dbo.FactRelationshipRowMapper;
@@ -15,6 +15,7 @@ import io.swagger.model.Content;
 import io.swagger.model.Details;
 import io.swagger.model.FactRelationship;
 import io.swagger.model.MannualCaseData;
+import io.swagger.model.Question;
 import io.swagger.model.UserFlagAnnotationManualData;
 import io.swagger.model.ViewerAnnotation;
 import io.swagger.model.ViewerFlag;
@@ -76,8 +77,10 @@ public class CaseRecordApiController implements CaseRecordApi {
 
         // See if we have a flag information.
         boolean created = false;
+        boolean processed = false;
+
         String flag = body.getFlag();
-        if (!"Unknown".equals(flag)) {
+        if (!"Unknown".equals(flag) && caseId != null && contentId != null) {
             sql = "SELECT * FROM flag WHERE content_id = " + contentId + " AND case_id = " + caseId;
             List<ViewerFlag> viewerFlags = viewerJdbcTemplate.query(sql, new ViewerFlagRowMapper());
             if (viewerFlags.size() > 0) {
@@ -94,12 +97,14 @@ public class CaseRecordApiController implements CaseRecordApi {
                 viewerJdbcTemplate.update(sql);
                 created = true;
             }
+
+            processed = true;
         }
 
         // See if we need to create/update annotations
         @Valid
         List<Annotation> annotations = body.getAnnotations();
-        if (annotations != null) {
+        if (annotations != null && caseId != null && contentId != null) {
             for (Annotation annotation : annotations) {
                 Integer annotationId = annotation.getAnnotationId();
                 if (annotationId == null || annotationId == 0) {
@@ -128,11 +133,13 @@ public class CaseRecordApiController implements CaseRecordApi {
                     viewerJdbcTemplate.update(sql);
                 }
             }
+
+            processed = true;
         }
 
         @Valid
         List<MannualCaseData> manualCaseDatas = body.getMannualCaseData();
-        if (manualCaseDatas != null) {
+        if (manualCaseDatas != null && caseId != null) {
             // Get patient id.
             sql = "SELECT person_id AS PersonId FROM case_info WHERE case_info_id = " + caseId;
             List<CaseInfo> caseInfos = registryJdbcTemplate.query(sql, new RegistryCaseInfoRowMapper());
@@ -172,8 +179,14 @@ public class CaseRecordApiController implements CaseRecordApi {
                 registryJdbcTemplate.update(sql);
                 created = true;
             }
+
+            processed = true;
         }
 
+        if (processed == false) {
+            return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        
         if (created) {
             return new ResponseEntity<Void>(HttpStatus.CREATED);
         } else {
@@ -181,16 +194,16 @@ public class CaseRecordApiController implements CaseRecordApi {
         }
     }
 
-    private Integer getConceptCodeForCategory(String category) {
-        List<Category> categories = viewerJdbcTemplate.query("SELECT c.concept_id AS ConceptId, c.section AS Section, c.category AS Category FROM category c WHERE section='" + category + "'", new CategoryConceptCodeRowMapper());
-        if (categories.size()>0) {
-            return categories.get(0).getConceptId();
+    private Integer getConceptCodeForSection(String section) {
+        List<Question> questions = viewerJdbcTemplate.query("SELECT c.concept_id AS ConceptId, c.section AS Section, c.category AS Category, c.question AS Question FROM category c WHERE section='" + section + "'", new QuestionRowMapper());
+        if (questions.size()>0) {
+            return questions.get(0).getConceptId();
         } else {
             return 0;
         }
     }
 
-    private String createSearchSqlStatement (Integer caseId, String categoriesToSend) {
+    private String createSearchSqlStatement (Integer caseId, String sectionsToSend) {
         String sqlSelectFrom = "SELECT"
             + " o.observation_date AS Date, "
             + " o.observation_id AS ObservationId, "
@@ -212,10 +225,10 @@ public class CaseRecordApiController implements CaseRecordApi {
             + " WHERE"
             + " ci.case_info_id = " + caseId;
         
-        if (categoriesToSend != null && !categoriesToSend.isEmpty()) {
-            String[] categories = categoriesToSend.split(",");
+        if (sectionsToSend != null && !sectionsToSend.isEmpty()) {
+            String[] categories = sectionsToSend.split(",");
             for (String category : categories) {
-                Integer concept_code = getConceptCodeForCategory(category);
+                Integer concept_code = getConceptCodeForSection(category);
                 if (concept_code > 0) {
                     sqlSelectFrom += " AND o.observation_concept_id = " + concept_code;
                 }
@@ -351,11 +364,11 @@ public class CaseRecordApiController implements CaseRecordApi {
             viewerJdbcTemplate.query(sql, viewerAnnotationRowMapper);
             Map<Integer, List<ViewerAnnotation>> userAnnotationMap = viewerAnnotationRowMapper.getResultMap();
 
-            sql = "SELECT c.concept_id AS ConceptId, c.section AS Section, c.category AS Category FROM category c";
-            CategoryConceptCodeRowMapper categoryConceptCodeRowMapper = new CategoryConceptCodeRowMapper();
+            sql = "SELECT c.concept_id AS ConceptId, c.section AS Section, c.category AS Category, c.question AS Question FROM category c";
+            QuestionRowMapper categoryConceptCodeRowMapper = new QuestionRowMapper();
             viewerJdbcTemplate.query(sql, categoryConceptCodeRowMapper);
 
-            CaseDataRowMapper caseDataRowMapper = new CaseDataRowMapper(categoryConceptCodeRowMapper.getCategoryConceptMap());
+            CaseDataRowMapper caseDataRowMapper = new CaseDataRowMapper(categoryConceptCodeRowMapper.getQuestionMap());
             sql = createSearchSqlStatement(caseIdInteger, sections);
             List<Content> registryData = registryJdbcTemplate.query(sql, caseDataRowMapper);
             registryData.removeAll(Collections.singletonList(null));

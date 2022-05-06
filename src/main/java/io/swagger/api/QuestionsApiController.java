@@ -1,5 +1,8 @@
 package io.swagger.api;
 
+import io.swagger.dbo.QuestionRowMapper;
+import io.swagger.model.Category;
+import io.swagger.model.Question;
 import io.swagger.model.Questions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,8 +16,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +48,10 @@ public class QuestionsApiController implements QuestionsApi {
 
     private final HttpServletRequest request;
 
+    @Autowired
+    @Qualifier("viewerJdbcTemplate")
+    private JdbcTemplate viewerJdbcTemplate;
+
     @org.springframework.beans.factory.annotation.Autowired
     public QuestionsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -51,15 +61,13 @@ public class QuestionsApiController implements QuestionsApi {
     public ResponseEntity<Questions> getQuestions(@NotNull @Parameter(in = ParameterIn.QUERY, description = "section that we are interested." ,required=true,schema=@Schema()) @Valid @RequestParam(value = "section", required = true) String section) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Questions>(objectMapper.readValue("[ {\n  \"question\" : \"Lab Results\",\n  \"conceptId\" : 12345,\n  \"section\" : \"Lab Results\",\n  \"category\" : \"Syphilis\"\n}, {\n  \"question\" : \"Lab Results\",\n  \"conceptId\" : 12345,\n  \"section\" : \"Lab Results\",\n  \"category\" : \"Syphilis\"\n} ]", Questions.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Questions>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            Questions questions = new Questions();
+            questions.addAll(viewerJdbcTemplate.query("SELECT c.concept_id AS ConceptId, c.section AS Section, c.category AS Category, c.question AS Question FROM category c WHERE section='" + section + "'", new QuestionRowMapper()));
+            
+            return new ResponseEntity<Questions>(questions, HttpStatus.OK);
         }
 
-        return new ResponseEntity<Questions>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Questions>(HttpStatus.NOT_ACCEPTABLE);
     }
 
 }

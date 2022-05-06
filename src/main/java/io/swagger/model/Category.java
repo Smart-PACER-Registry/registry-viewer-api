@@ -4,6 +4,7 @@ public class Category {
     private Integer conceptId;
     private String section;
     private String category;
+    private String question;
 
     public Integer getConceptId() {
         return this.conceptId;
@@ -27,5 +28,13 @@ public class Category {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getQuestion() {
+        return this.question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
     }
 }
