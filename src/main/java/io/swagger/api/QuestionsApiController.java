@@ -1,7 +1,6 @@
 package io.swagger.api;
 
 import io.swagger.dbo.QuestionRowMapper;
-import io.swagger.model.Category;
 import io.swagger.model.Question;
 import io.swagger.model.Questions;
 import com.fasterxml.jackson.databind.ObjectMapper;

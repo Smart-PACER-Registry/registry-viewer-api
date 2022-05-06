@@ -22,7 +22,7 @@ public class QuestionRowMapper implements RowMapper<Question> {
         question.setConceptId(rs.getInt("ConceptId"));
         question.setSection(rs.getString("Section"));
         question.setCategory(rs.getString("Category"));
-        question.setQuestion(rs.getString("Question"));
+        question.setText(rs.getString("Question"));
 
         questionMap.put(rs.getInt("ConceptId"), question);
 

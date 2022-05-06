@@ -10,11 +10,12 @@ import io.swagger.dbo.ViewerFlagRowMapper;
 import io.swagger.model.Annotation;
 import io.swagger.model.CaseData;
 import io.swagger.model.CaseInfo;
-import io.swagger.model.Category;
 import io.swagger.model.Content;
+import io.swagger.model.DetailObservation;
+import io.swagger.model.DetailUserData;
 import io.swagger.model.Details;
 import io.swagger.model.FactRelationship;
-import io.swagger.model.MannualCaseData;
+import io.swagger.model.ManualCaseData;
 import io.swagger.model.Question;
 import io.swagger.model.UserFlagAnnotationManualData;
 import io.swagger.model.ViewerAnnotation;
@@ -138,7 +139,7 @@ public class CaseRecordApiController implements CaseRecordApi {
         }
 
         @Valid
-        List<MannualCaseData> manualCaseDatas = body.getMannualCaseData();
+        List<ManualCaseData> manualCaseDatas = body.getManualCaseData();
         if (manualCaseDatas != null && caseId != null) {
             // Get patient id.
             sql = "SELECT person_id AS PersonId FROM case_info WHERE case_info_id = " + caseId;
@@ -148,7 +149,7 @@ public class CaseRecordApiController implements CaseRecordApi {
             }
 
             Integer personId = caseInfos.get(0).getPersonId();
-            for (MannualCaseData mannualCaseData : manualCaseDatas) {
+            for (ManualCaseData mannualCaseData : manualCaseDatas) {
                 Integer conceptId = mannualCaseData.getConceptId();
                 String value = mannualCaseData.getValue();
                 String dateString = mannualCaseData.getDate();
@@ -258,91 +259,98 @@ public class CaseRecordApiController implements CaseRecordApi {
         List<FactRelationship> factRelationships = registryJdbcTemplate.query(sql, new FactRelationshipRowMapper());
         Details details = new Details();
 
-        // From the factrelationship, set get resource name to read for each realtionship.
-        for (FactRelationship factRelationship : factRelationships) {
-            Integer domainId = factRelationship.getDomainConceptId2();
-            Integer entityId = factRelationship.getFactId2();
-            if (domainId == 13L) { // Drug_Exposure
-                sql = "SELECT"
-                    + " d.drug_exposure_start_date AS startDate,"
-                    + " d.drug_exposure_end_date AS endDate,"
-                    + " c.vocabulary_id AS System,"
-                    + " c.concept_code AS Code,"
-                    + " c.concept_name AS Display,"
-                    + " d.refills AS Refills,"
-                    + " d.quantity AS Quantity,"
-                    + " d.days_supply AS DaysSupply,"
-                    + " d.sig AS Sig,"
-                    + " cr.vocabulary_id AS RouteSystem,"
-                    + " cr.concept_code AS RouteCode,"
-                    + " cr.concept_name AS RouteDisplay,"
-                    + " d.lot_number AS LotNumber"
-                    + " FROM drug_exposure d join concept c on d.drug_concept_id = c.concept_id"
-                    + " left join concept cr on d.route_concept_id = cr.concept_id"
-                    + " WHERE d.drug_exposure_id = " + entityId;
-            } else if (domainId == 19L) { // condition_occurrence
-                sql = "SELECT"
-                    + " cd.condition_start_date AS startDate,"
-                    + " cd.condition_end_date AS endDate,"
-                    + " c.vocabulary_id AS System,"
-                    + " c.concept_code AS Code,"
-                    + " c.concept_name AS Display"
-                    + " FROM condition_occurrence cd join concept c on cd.condition_concept_id = c.concept_id"
-                    + " WHERE cd.condition_occurrence_id = " + entityId;
-            } else if (domainId == 27L) { // observation
-                sql = "SELECT"
-                    + " o.observation_date AS Date,"
-                    + " c.vocabulary_id AS System,"
-                    + " c.concept_code AS Code,"
-                    + " c.concept_name AS Display,"
-                    + " o.value_as_number AS ValueAsNumber,"
-                    + " o.value_as_string AS ValueAsString,"
-                    + " cv.vocabulary_id AS ValueAsConceptSystem,"
-                    + " cv.concept_code AS ValueAsConceptCode,"
-                    + " cv.concept_name AS ValueAsConceptDisplay,"
-                    + " cu.concept_name AS Unit"
-                    + " FROM observation o join concept c on o.observation_concept_id = c.concept_id"
-                    + " left join concept cv on o.value_as_concept_id = cv.concept_id"
-                    + " left join concept cu on o.unit_concept_id = cu.concept_id"
-                    + " WHERE o.observation_id = " + entityId;
-            } else if (domainId == 21L) { // measurement
-                sql = "SELECT"
-                    + " m.measurement_date AS Date,"
-                    + " c.vocabulary_id AS System,"
-                    + " c.concept_code AS Code,"
-                    + " c.concept_name AS Display,"
-                    + " co.concept_name AS Operator,"
-                    + " m.value_as_number AS ValueAsNumber,"
-                    + " m.value_source_value AS ValueSourceValue,"
-                    + " cv.vocabulary_id AS ValueAsConceptSystem,"
-                    + " cv.concept_code AS ValueAsConceptCode,"
-                    + " cv.concept_name AS ValueAsConceptDisplay,"
-                    + " cu.concept_name AS Unit,"
-                    + " m.range_low AS RangeLow,"
-                    + " m.range_high AS RangeHigh"
-                    + " FROM measurement m join concept c on m.measurement_concept_id = c.concept_id"
-                    + " left join concept cv on m.value_as_concept_id = cv.concept_id"
-                    + " left join concept cu on m.unit_concept_id = cu.concept_id"
-                    + " left join concept co on m.operator_concept_id = co.concept_id"
-                    + " WHERE m.measurement_id = " + entityId;
-            } else if (domainId == 5085L) { // note
-                sql = "SELECT"
-                    + " n.note_date AS Date,"
-                    + " c.vocabulary_id AS System,"
-                    + " c.concept_code AS Code,"
-                    + " c.concept_name AS Display,"
-                    + " n.note_text AS Value"
-                    + " FROM note n join concept c on n.note_type_concept_id = c.concept_id"
-                    + " WHERE n.note_id = " + entityId;
-            } else {
-                log.error("Invalid Domain ConceptID2");
-                continue;
-            }
+        if (factRelationships == null || factRelationships.size() ==0) {
+            // We have no detail. But we still need to populate tableDisplayText.
+            DetailUserData detailUserData = new DetailUserData();
+            detailUserData.setTableDisplayText(content.getDerivedValue().getValue());
+            details.add(detailUserData);
+        } else {
+            // From the factrelationship, set get resource name to read for each realtionship.
+            for (FactRelationship factRelationship : factRelationships) {
+                Integer domainId = factRelationship.getDomainConceptId2();
+                Integer entityId = factRelationship.getFactId2();
+                if (domainId == 13L) { // Drug_Exposure
+                    sql = "SELECT"
+                        + " d.drug_exposure_start_date AS startDate,"
+                        + " d.drug_exposure_end_date AS endDate,"
+                        + " c.vocabulary_id AS System,"
+                        + " c.concept_code AS Code,"
+                        + " c.concept_name AS Display,"
+                        + " d.refills AS Refills,"
+                        + " d.quantity AS Quantity,"
+                        + " d.days_supply AS DaysSupply,"
+                        + " d.sig AS Sig,"
+                        + " cr.vocabulary_id AS RouteSystem,"
+                        + " cr.concept_code AS RouteCode,"
+                        + " cr.concept_name AS RouteDisplay,"
+                        + " d.lot_number AS LotNumber"
+                        + " FROM drug_exposure d join concept c on d.drug_concept_id = c.concept_id"
+                        + " left join concept cr on d.route_concept_id = cr.concept_id"
+                        + " WHERE d.drug_exposure_id = " + entityId;
+                } else if (domainId == 19L) { // condition_occurrence
+                    sql = "SELECT"
+                        + " cd.condition_start_date AS startDate,"
+                        + " cd.condition_end_date AS endDate,"
+                        + " c.vocabulary_id AS System,"
+                        + " c.concept_code AS Code,"
+                        + " c.concept_name AS Display"
+                        + " FROM condition_occurrence cd join concept c on cd.condition_concept_id = c.concept_id"
+                        + " WHERE cd.condition_occurrence_id = " + entityId;
+                } else if (domainId == 27L) { // observation
+                    sql = "SELECT"
+                        + " o.observation_date AS Date,"
+                        + " c.vocabulary_id AS System,"
+                        + " c.concept_code AS Code,"
+                        + " c.concept_name AS Display,"
+                        + " o.value_as_number AS ValueAsNumber,"
+                        + " o.value_as_string AS ValueAsString,"
+                        + " cv.vocabulary_id AS ValueAsConceptSystem,"
+                        + " cv.concept_code AS ValueAsConceptCode,"
+                        + " cv.concept_name AS ValueAsConceptDisplay,"
+                        + " cu.concept_name AS Unit"
+                        + " FROM observation o join concept c on o.observation_concept_id = c.concept_id"
+                        + " left join concept cv on o.value_as_concept_id = cv.concept_id"
+                        + " left join concept cu on o.unit_concept_id = cu.concept_id"
+                        + " WHERE o.observation_id = " + entityId;
+                } else if (domainId == 21L) { // measurement
+                    sql = "SELECT"
+                        + " m.measurement_date AS Date,"
+                        + " c.vocabulary_id AS System,"
+                        + " c.concept_code AS Code,"
+                        + " c.concept_name AS Display,"
+                        + " co.concept_name AS Operator,"
+                        + " m.value_as_number AS ValueAsNumber,"
+                        + " m.value_source_value AS ValueSourceValue,"
+                        + " cv.vocabulary_id AS ValueAsConceptSystem,"
+                        + " cv.concept_code AS ValueAsConceptCode,"
+                        + " cv.concept_name AS ValueAsConceptDisplay,"
+                        + " cu.concept_name AS Unit,"
+                        + " m.range_low AS RangeLow,"
+                        + " m.range_high AS RangeHigh"
+                        + " FROM measurement m join concept c on m.measurement_concept_id = c.concept_id"
+                        + " left join concept cv on m.value_as_concept_id = cv.concept_id"
+                        + " left join concept cu on m.unit_concept_id = cu.concept_id"
+                        + " left join concept co on m.operator_concept_id = co.concept_id"
+                        + " WHERE m.measurement_id = " + entityId;
+                } else if (domainId == 5085L) { // note
+                    sql = "SELECT"
+                        + " n.note_date AS Date,"
+                        + " c.vocabulary_id AS System,"
+                        + " c.concept_code AS Code,"
+                        + " c.concept_name AS Display,"
+                        + " n.note_text AS Value"
+                        + " FROM note n join concept c on n.note_type_concept_id = c.concept_id"
+                        + " WHERE n.note_id = " + entityId;
+                } else {
+                    log.error("Invalid Domain ConceptID2");
+                    continue;
+                }
 
-            DetailsRowMapper detailsRowMapper = new DetailsRowMapper(domainId);
-            detailsRowMapper.setShortDisplay(content.getDerivedValue().getValue());
-            
-            details.addAll(registryJdbcTemplate.query(sql, detailsRowMapper));            
+                DetailsRowMapper detailsRowMapper = new DetailsRowMapper(domainId);
+                detailsRowMapper.setShortDisplay(content.getDerivedValue().getValue());
+                
+                details.addAll(registryJdbcTemplate.query(sql, detailsRowMapper));            
+            }
         }
 
         content.setDetails(details);
@@ -365,10 +373,10 @@ public class CaseRecordApiController implements CaseRecordApi {
             Map<Integer, List<ViewerAnnotation>> userAnnotationMap = viewerAnnotationRowMapper.getResultMap();
 
             sql = "SELECT c.concept_id AS ConceptId, c.section AS Section, c.category AS Category, c.question AS Question FROM category c";
-            QuestionRowMapper categoryConceptCodeRowMapper = new QuestionRowMapper();
-            viewerJdbcTemplate.query(sql, categoryConceptCodeRowMapper);
+            QuestionRowMapper questionRowMapper = new QuestionRowMapper();
+            viewerJdbcTemplate.query(sql, questionRowMapper);
 
-            CaseDataRowMapper caseDataRowMapper = new CaseDataRowMapper(categoryConceptCodeRowMapper.getQuestionMap());
+            CaseDataRowMapper caseDataRowMapper = new CaseDataRowMapper(questionRowMapper.getQuestionMap());
             sql = createSearchSqlStatement(caseIdInteger, sections);
             List<Content> registryData = registryJdbcTemplate.query(sql, caseDataRowMapper);
             registryData.removeAll(Collections.singletonList(null));

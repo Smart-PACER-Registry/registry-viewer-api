@@ -9,13 +9,13 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * MannualCaseData
+ * ManualCaseData
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-05T14:02:48.497Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-06T18:56:45.410Z[GMT]")
 
 
-public class MannualCaseData   {
+public class ManualCaseData   {
   @JsonProperty("conceptId")
   private Integer conceptId = null;
 
@@ -25,7 +25,7 @@ public class MannualCaseData   {
   @JsonProperty("date")
   private String date = null;
 
-  public MannualCaseData conceptId(Integer conceptId) {
+  public ManualCaseData conceptId(Integer conceptId) {
     this.conceptId = conceptId;
     return this;
   }
@@ -44,7 +44,7 @@ public class MannualCaseData   {
     this.conceptId = conceptId;
   }
 
-  public MannualCaseData value(String value) {
+  public ManualCaseData value(String value) {
     this.value = value;
     return this;
   }
@@ -63,7 +63,7 @@ public class MannualCaseData   {
     this.value = value;
   }
 
-  public MannualCaseData date(String date) {
+  public ManualCaseData date(String date) {
     this.date = date;
     return this;
   }
@@ -91,10 +91,10 @@ public class MannualCaseData   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MannualCaseData mannualCaseData = (MannualCaseData) o;
-    return Objects.equals(this.conceptId, mannualCaseData.conceptId) &&
-        Objects.equals(this.value, mannualCaseData.value) &&
-        Objects.equals(this.date, mannualCaseData.date);
+    ManualCaseData manualCaseData = (ManualCaseData) o;
+    return Objects.equals(this.conceptId, manualCaseData.conceptId) &&
+        Objects.equals(this.value, manualCaseData.value) &&
+        Objects.equals(this.date, manualCaseData.date);
   }
 
   @Override
@@ -105,7 +105,7 @@ public class MannualCaseData   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class MannualCaseData {\n");
+    sb.append("class ManualCaseData {\n");
     
     sb.append("    conceptId: ").append(toIndentedString(conceptId)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");

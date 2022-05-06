@@ -4,7 +4,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.model.Annotation;
-import io.swagger.model.MannualCaseData;
+import io.swagger.model.ManualCaseData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * UserFlagAnnotationManualData
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-05T14:02:48.497Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-06T18:56:45.410Z[GMT]")
 
 
 public class UserFlagAnnotationManualData   {
@@ -27,9 +27,9 @@ public class UserFlagAnnotationManualData   {
   @Valid
   private List<Annotation> annotations = null;
 
-  @JsonProperty("mannualCaseData")
+  @JsonProperty("manualCaseData")
   @Valid
-  private List<MannualCaseData> mannualCaseData = null;
+  private List<ManualCaseData> manualCaseData = null;
 
   public UserFlagAnnotationManualData flag(String flag) {
     this.flag = flag;
@@ -77,31 +77,31 @@ public class UserFlagAnnotationManualData   {
     this.annotations = annotations;
   }
 
-  public UserFlagAnnotationManualData mannualCaseData(List<MannualCaseData> mannualCaseData) {
-    this.mannualCaseData = mannualCaseData;
+  public UserFlagAnnotationManualData manualCaseData(List<ManualCaseData> manualCaseData) {
+    this.manualCaseData = manualCaseData;
     return this;
   }
 
-  public UserFlagAnnotationManualData addMannualCaseDataItem(MannualCaseData mannualCaseDataItem) {
-    if (this.mannualCaseData == null) {
-      this.mannualCaseData = new ArrayList<MannualCaseData>();
+  public UserFlagAnnotationManualData addManualCaseDataItem(ManualCaseData manualCaseDataItem) {
+    if (this.manualCaseData == null) {
+      this.manualCaseData = new ArrayList<ManualCaseData>();
     }
-    this.mannualCaseData.add(mannualCaseDataItem);
+    this.manualCaseData.add(manualCaseDataItem);
     return this;
   }
 
   /**
-   * Get mannualCaseData
-   * @return mannualCaseData
+   * Get manualCaseData
+   * @return manualCaseData
    **/
   @Schema(description = "")
       @Valid
-    public List<MannualCaseData> getMannualCaseData() {
-    return mannualCaseData;
+    public List<ManualCaseData> getManualCaseData() {
+    return manualCaseData;
   }
 
-  public void setMannualCaseData(List<MannualCaseData> mannualCaseData) {
-    this.mannualCaseData = mannualCaseData;
+  public void setManualCaseData(List<ManualCaseData> manualCaseData) {
+    this.manualCaseData = manualCaseData;
   }
 
 
@@ -116,12 +116,12 @@ public class UserFlagAnnotationManualData   {
     UserFlagAnnotationManualData userFlagAnnotationManualData = (UserFlagAnnotationManualData) o;
     return Objects.equals(this.flag, userFlagAnnotationManualData.flag) &&
         Objects.equals(this.annotations, userFlagAnnotationManualData.annotations) &&
-        Objects.equals(this.mannualCaseData, userFlagAnnotationManualData.mannualCaseData);
+        Objects.equals(this.manualCaseData, userFlagAnnotationManualData.manualCaseData);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(flag, annotations, mannualCaseData);
+    return Objects.hash(flag, annotations, manualCaseData);
   }
 
   @Override
@@ -131,7 +131,7 @@ public class UserFlagAnnotationManualData   {
     
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
     sb.append("    annotations: ").append(toIndentedString(annotations)).append("\n");
-    sb.append("    mannualCaseData: ").append(toIndentedString(mannualCaseData)).append("\n");
+    sb.append("    manualCaseData: ").append(toIndentedString(manualCaseData)).append("\n");
     sb.append("}");
     return sb.toString();
   }

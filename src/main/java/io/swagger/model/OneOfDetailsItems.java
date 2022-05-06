@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @JsonSubTypes.Type(value = DetailMedication.class, name = "DetailMedication"),
   @JsonSubTypes.Type(value = DetailObservation.class, name = "DetailObservation"),
   @JsonSubTypes.Type(value = DetailMeasurement.class, name = "DetailMeasurement"),
-  @JsonSubTypes.Type(value = DetailNote.class, name = "DetailNote")
+  @JsonSubTypes.Type(value = DetailNote.class, name = "DetailNote"),
+  @JsonSubTypes.Type(value = DetailUserData.class, name = "DetailUserData")
 })
 public interface OneOfDetailsItems {
 

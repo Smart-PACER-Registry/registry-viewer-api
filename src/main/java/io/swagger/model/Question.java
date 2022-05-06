@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * Question
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-05T14:02:48.497Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-05-06T18:56:45.410Z[GMT]")
 
 
 public class Question   {
@@ -25,8 +25,8 @@ public class Question   {
   @JsonProperty("category")
   private String category = null;
 
-  @JsonProperty("question")
-  private String question = null;
+  @JsonProperty("text")
+  private String text = null;
 
   public Question conceptId(Integer conceptId) {
     this.conceptId = conceptId;
@@ -85,23 +85,23 @@ public class Question   {
     this.category = category;
   }
 
-  public Question question(String question) {
-    this.question = question;
+  public Question text(String text) {
+    this.text = text;
     return this;
   }
 
   /**
-   * Get question
-   * @return question
+   * Get text
+   * @return text
    **/
   @Schema(example = "Lab Results", description = "")
   
-    public String getQuestion() {
-    return question;
+    public String getText() {
+    return text;
   }
 
-  public void setQuestion(String question) {
-    this.question = question;
+  public void setText(String text) {
+    this.text = text;
   }
 
 
@@ -117,12 +117,12 @@ public class Question   {
     return Objects.equals(this.conceptId, question.conceptId) &&
         Objects.equals(this.section, question.section) &&
         Objects.equals(this.category, question.category) &&
-        Objects.equals(this.question, question.question);
+        Objects.equals(this.text, question.text);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(conceptId, section, category, question);
+    return Objects.hash(conceptId, section, category, text);
   }
 
   @Override
@@ -133,7 +133,7 @@ public class Question   {
     sb.append("    conceptId: ").append(toIndentedString(conceptId)).append("\n");
     sb.append("    section: ").append(toIndentedString(section)).append("\n");
     sb.append("    category: ").append(toIndentedString(category)).append("\n");
-    sb.append("    question: ").append(toIndentedString(question)).append("\n");
+    sb.append("    text: ").append(toIndentedString(text)).append("\n");
     sb.append("}");
     return sb.toString();
   }
