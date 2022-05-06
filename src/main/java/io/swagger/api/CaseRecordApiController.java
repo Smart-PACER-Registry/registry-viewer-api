@@ -70,7 +70,7 @@ public class CaseRecordApiController implements CaseRecordApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addUserFlagAnnotationManualData(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "caseId", required = true) Integer caseId,@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "contentId", required = true) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "create or update flag, annotations, or user data", schema=@Schema()) @Valid @RequestBody UserFlagAnnotationManualData body) {
+    public ResponseEntity<Void> addUserFlagAnnotationManualData(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "caseId", required = true) Integer caseId,@Parameter(in = ParameterIn.QUERY, description = "" ,schema=@Schema()) @Valid @RequestParam(value = "contentId", required = false) Integer contentId,@Parameter(in = ParameterIn.DEFAULT, description = "create or update flag, annotations, or user data", schema=@Schema()) @Valid @RequestBody UserFlagAnnotationManualData body) {    
         String accept = request.getHeader("Accept");
         String sql;
 
